@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ClassyChat</title>
+		<link rel="stylesheet" href="./css/bootstrap.min.css" />
+		<script src="./js/jquery.min.js"></script>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body class="d-flex flex-column">
+		<nav class="nav navbar fixed-top bg-dark d-flex p-3">
+			<div class="navbar-title text-info"><h4>ClassyChat</h4></div>
+			<div class="nav-right d-flex flex-row align-items-center">
+				<h4 class="mr-5 text-info">Username:&nbsp;</h4>
+				<button
+					id="changeNickBtn"
+					class="btn btn-success text-light font-weight-bold text-xxl-right"
+					style="width: 5rem"
+				></button>
+			</div>
+		</nav>
+		<div id="top">
+			<ul id="messages" class="d-flex flex-column"></ul>
+		</div>
+
+		<form id="form" action="">
+			<input id="input" autocomplete="off" minlength="1" maxlength="255" />
+			<button class="btn btn-secondary" id="btn_send">Send</button>
+		</form>
+
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script src="main.js"></script>
+	</body>
+</html>
