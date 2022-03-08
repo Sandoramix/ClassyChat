@@ -55,14 +55,14 @@ io.on(`connection`, (socket) => {
 	});
 
 	socket.on(`typing`, (username) => {
-		let hash = getHash(`${ADDRESS}:${username}`);
+		let hash = getHash(`${socket.id}:${username}`);
 
 		io.emit(`typing`, username, hash);
 		// console.log(`[${ADDRESS}] Typing - ${hash}`);
 	});
 
 	socket.on(`not typing`, (username) => {
-		let hash = getHash(`${ADDRESS}:${username}`);
+		let hash = getHash(`${socket.id}:${username}`);
 
 		io.emit(`not typing`, username, hash);
 		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
