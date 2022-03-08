@@ -5,12 +5,15 @@ const form = $(`#form`);
 const input = $(`#input`);
 const changeNickButton = $(`#changeNickBtn`);
 const submitButton = $(`#btn_send`);
+const typing_users_cnt = $(`#typing-users`);
 
 const new_msg_popup = $(`#new-message`);
 var isScrolling = false;
 
 const socket = io();
 var username = getUsername();
+
+var typing_users = new Map();
 //---------------------------
 //Element's events
 changeNickButton.on(`click`, newUsername);
@@ -23,13 +26,14 @@ new_msg_popup.on(`click`, () => {
 	scroll_bottom();
 });
 
-// input.on(`change`, (ev) => {
-// 	if (ev.target.textContent.trim() == ``) {
-// 		socket.emit(`no-typing`, username);
-// 		return;
-// 	}
-// 	socket.emit(`typing`, username);
-// });
+input.on(`input`, (ev) => {
+	let text = input.val();
+	if (text.trim() == ``) {
+		socket.emit(`not typing`, username);
+		return;
+	}
+	socket.emit(`typing`, username);
+});
 
 //---------------------------
 
@@ -64,18 +68,37 @@ socket.on(`new message`, (username, message) => {
 	scroll_bottom();
 });
 
+//user connected
 socket.emit(`user connected`, username);
 socket.on(`user connected`, (username) => {
 	conn_disc_part(username, true);
 });
 
+//user disconnected
 socket.on(`user disconnected`, (username) => {
 	conn_disc_part(username, false);
+});
+socket.on(`typing`, (user, id) => {
+	if (typing_users.size > 1 || typing_users.has(id)) return;
+
+	let msg = `${user.length > 10 ? `${user.substring(0, 9)}...` : user} sta scrivendo...`;
+	let div = $(`<div>`);
+	div.text(msg);
+	typing_users_cnt.append(div);
+
+	typing_users.set(id, div);
+});
+
+socket.on(`not typing`, (user, id) => {
+	if (!typing_users.has(id)) return;
+	console.log();
+	typing_users.get(id).remove();
+	typing_users.delete(id);
 });
 
 //--------------------------------
 //UTILS
-
+//send message if user disconnected/connected
 function conn_disc_part(user, flag) {
 	let msg = setInfoPart(user);
 	//-------------------------------------
@@ -90,8 +113,10 @@ function conn_disc_part(user, flag) {
 	scroll_bottom();
 }
 
+//send message
 function submit(e) {
 	if (e) {
+		//prevent from page redirection
 		e.preventDefault();
 	}
 	text = input.val().toString();
@@ -101,8 +126,10 @@ function submit(e) {
 	input.val(``);
 	isScrolling = false;
 	scroll_bottom();
+	socket.emit(`not typing`, username);
 }
 
+//set message info [left] part with or without separator [flag]
 function setInfoPart(nickname, flag) {
 	let msg = $(`<li>`);
 	msg.addClass(`msg`);
@@ -141,6 +168,7 @@ function setInfoPart(nickname, flag) {
 	return msg;
 }
 
+//get username [from localStorage or prompt if missing]
 function getUsername() {
 	let user = null;
 	while (user == `null` || !user || user.trim() == '') {
@@ -151,14 +179,19 @@ function getUsername() {
 		}
 		user = prompt('Username: ', username);
 	}
-	localStorage.setItem(`username`, user);
+	user = user.replace(` `, `_`);
+	setUsername(user);
 
 	changeNickButton.text(user.length > 10 ? `${user.substring(0, 9)}...` : user);
 	titleUpdate(user);
 
 	return user;
 }
-
+function setUsername(user) {
+	username = user;
+	localStorage.setItem(`username`, user);
+}
+//change username
 function newUsername() {
 	let old = username || null;
 	localStorage.removeItem(`username`);
@@ -168,6 +201,7 @@ function newUsername() {
 	socket.emit(`change username`, old, username);
 }
 
+//update page title with username
 function titleUpdate(user) {
 	document.title = `ClassyChat - ${user}`;
 }

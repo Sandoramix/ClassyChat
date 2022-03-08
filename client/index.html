@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="./css/bootstrap.min.css" />
 		<script src="./js/jquery.min.js"></script>
 		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/messages.css" />
 	</head>
 	<body>
 		<div id="body">
@@ -23,11 +24,16 @@
 					></button>
 				</div>
 			</nav>
+
 			<div class="filler"></div>
+
 			<div id="top">
 				<ul id="messages" class="d-flex flex-column"></ul>
 			</div>
 			<div id="new-message" class="d-none"></div>
+
+			<div id="typing-users"></div>
+
 			<form id="form">
 				<input id="input" autocomplete="off" minlength="1" maxlength="255" />
 				<button class="btn btn-secondary" id="btn_send">Send</button>

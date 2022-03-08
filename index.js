@@ -8,11 +8,14 @@ const app = express();
 const socket = require('socket.io');
 
 const http = require(`http`);
+
 const http_server = http.createServer(app).listen(env.HTTP_PORT, env.HOST, () => {
 	console.log(`Running server on http://localhost:${env.HTTP_PORT}`);
 });
 
-const io = socket(http_server, { pingTimeout: 180000, pingInterval: 25000 });
+const crypto = require(`crypto`);
+
+const io = new socket.Server(http_server, { pingTimeout: 180000, pingInterval: 25000 });
 
 app.use(express.static('./client/'));
 
@@ -26,9 +29,10 @@ io.on(`connection`, (socket) => {
 	var nickname;
 
 	socket.on(`disconnect`, (r) => {
-		io.emit(`user disconnected`, nickname);
 		console.log(`[${ADDRESS}] Disconnected - ${nickname}`);
-		console.log(`reason = ${r}`);
+		if (!nickname) return;
+		io.emit(`user disconnected`, nickname);
+		// console.log(`reason = ${r}`);
 	});
 
 	socket.on(`new message`, (user, msg) => {
@@ -49,4 +53,24 @@ io.on(`connection`, (socket) => {
 
 		nickname = username;
 	});
+
+	socket.on(`typing`, (username) => {
+		let hash = getHash(`${ADDRESS}:${username}`);
+
+		io.emit(`typing`, username, hash);
+		// console.log(`[${ADDRESS}] Typing - ${hash}`);
+	});
+
+	socket.on(`not typing`, (username) => {
+		let hash = getHash(`${ADDRESS}:${username}`);
+
+		io.emit(`not typing`, username, hash);
+		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
+	});
 });
+
+function getHash(plaintext) {
+	var hasher = crypto.createHmac(`sha256`, env.crypto_secret);
+
+	return hasher.update(plaintext).digest(`base64`);
+}

@@ -23,9 +23,6 @@ nav {
 .filler {
 	height: 75px;
 }
-#top {
-	min-height: calc(100vh - 75px - 5rem);
-}
 
 #form {
 	background: rgba(0, 0, 0, 0.35);
@@ -55,16 +52,14 @@ nav {
 	font-weight: 500;
 	margin: 0.25ch 0;
 }
+/*=============================
+TYPING USERS*/
+#typing-users {
+	position: fixed;
+	right: 0;
+	bottom: 80px;
 
-#messages {
-	list-style-type: none;
-	margin: 0;
-	margin-bottom: 100px;
-	padding: 0;
-}
-
-#messages > li:nth-child(odd) {
-	background: #efefef;
+	color: rgba(107, 107, 107, 0.9);
 }
 /*=============================
 NEW MESSAGE POPUP*/
@@ -100,42 +95,6 @@ NEW MESSAGE POPUP*/
 	cursor: pointer;
 }
 
-/* ------------------------------------- */
-/* MESSAGE */
-.msg {
-	position: relative;
-	display: flex;
-	padding: 0 0.5rem 0 0.5rem;
-
-	min-height: 3rem;
-	align-items: center;
-}
-.left {
-	display: flex;
-	flex-direction: row;
-	height: 100%;
-}
-.right {
-	overflow-wrap: break-word;
-}
-.content {
-	margin: 0;
-	overflow: hidden;
-}
-.information {
-	margin: 0 0 0 0.5rem;
-	overflow: hidden;
-}
-.time {
-	margin: 0;
-}
-.user {
-	margin: 0 0.1rem 0 0.5rem;
-}
-.separator {
-	margin: 0 0.5rem 0 0;
-}
-/* -------------------------------------- */
 body::-webkit-scrollbar {
 	width: 12px;
 }

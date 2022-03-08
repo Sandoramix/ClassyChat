@@ -1,0 +1,51 @@
+#top {
+	min-height: calc(100vh - 75px - 5rem);
+}
+
+#messages {
+	list-style-type: none;
+	margin: 0;
+	margin-bottom: 100px;
+	padding: 0;
+}
+
+#messages > li:nth-child(odd) {
+	background: #efefef;
+}
+
+/* ------------------------------------- */
+/* MESSAGE */
+.msg {
+	position: relative;
+	display: flex;
+	padding: 0 0.5rem 0 0.5rem;
+
+	min-height: 3rem;
+	align-items: center;
+}
+.left {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+}
+.right {
+	overflow-wrap: break-word;
+}
+.content {
+	margin: 0;
+	overflow: hidden;
+}
+.information {
+	margin: 0 0 0 0.5rem;
+	overflow: hidden;
+}
+.time {
+	margin: 0;
+}
+.user {
+	margin: 0 0.1rem 0 0.5rem;
+}
+.separator {
+	margin: 0 0.5rem 0 0;
+}
+/* -------------------------------------- */
