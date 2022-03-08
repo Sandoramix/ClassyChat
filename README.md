@@ -1,4 +1,4 @@
 # ClassyChat
 - Chat for classes
 
-## Test app of using socket.io
+## Test app that uses socket.io
