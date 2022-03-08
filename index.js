@@ -1,49 +1,55 @@
+const env = require('./config/config');
+
 const express = require('express');
+const fs = require(`fs`);
 const path = require('path');
 
-const http = require('http');
-
 const app = express();
-const server = http.Server(app);
-const s_io = require('socket.io');
+const socket = require('socket.io');
 
-const io = s_io(server);
+const http = require(`http`);
+const http_server = http.createServer(app).listen(env.HTTP_PORT, env.HOST, () => {
+	console.log(`Running server on http://localhost:${env.HTTP_PORT}`);
+});
 
-app.use(express.static('./web'));
+const io = socket(http_server, { pingTimeout: 180000, pingInterval: 25000 });
+
+app.use(express.static('./client/'));
 
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 
-const PORT = 8080;
-const HOST = '0.0.0.0';
-
-server.listen(PORT, HOST, () => {
-	console.log(`Running server on http://${HOST}:${PORT}`);
-});
 io.on(`connection`, (socket) => {
-	const address = socket.handshake.address;
+	const ADDRESS = socket.handshake.address;
 
-	socket.on(`disconnect`, () => {
-		console.log(`user disconnected: ${address}`);
+	var nickname;
+
+	socket.on(`disconnect`, (r) => {
+		io.emit(`user disconnected`, nickname);
+		console.log(`[${ADDRESS}] Disconnected - ${nickname}`);
+		console.log(`reason = ${r}`);
 	});
-	socket.on(`chat message`, (user, msg) => {
-		io.emit(`chat message`, user, msg);
+
+	socket.on(`new message`, (user, msg) => {
+		console.log(`[${ADDRESS}] new message: `, msg);
+		io.emit(`new message`, user, msg);
 	});
+
 	socket.on(`change username`, (old_user, new_user) => {
+		console.log(`[${ADDRESS}] New username | ${old_user} -> ${new_user}`);
 		io.emit(`change username`, old_user, new_user);
-	});
-	socket.on(`get ip`, (username) => {
-		if (username == 'null' || !username) return;
-		console.log(`Connection - ${username}: ${address}`);
-	});
-	socket.on(`user connected`, (username) => {
-		io.emit(`user connected`, username);
-	});
-	socket.on(`user disconnected`, (username) => {
-		io.emit(`user disconnected`, username);
+
+		nickname = new_user;
 	});
 
-	// io.emit('chat message', { username: `sasha`, msg: `ciao` });
-	// io.emit(`change username`, `sasha`, `Sasha`);
+	socket.on(`user connected`, (username) => {
+		console.log(`[${ADDRESS}] Connected - ${username}`);
+		io.emit(`user connected`, username);
+
+		nickname = username;
+	});
+	// setInterval(() => {
+	// 	io.emit(`new message`, `test`, `prova`);
+	// }, 1000);
 });
