@@ -99,6 +99,8 @@ function submit(e) {
 	text = text.substring(0, 255);
 	socket.emit(`new message`, username, text);
 	input.val(``);
+	isScrolling = false;
+	scroll_bottom();
 }
 
 function setInfoPart(nickname, flag) {
@@ -170,6 +172,7 @@ function titleUpdate(user) {
 	document.title = `ClassyChat - ${user}`;
 }
 
+//scroll to bottom
 function scroll_bottom() {
 	if (isScrolling) {
 		newMessagePopup();
@@ -179,11 +182,13 @@ function scroll_bottom() {
 	$(`html`).scrollTop(messages.height());
 }
 
+// new message popup if user is scrolling
 function newMessagePopup() {
 	if (!isScrolling) return;
 	new_msg_popup.removeClass(`d-none`);
 }
 
+//anon function [scroll direction && user scroll detect]
 $(() => {
 	var _top = $(window).scrollTop();
 	var _direction;
@@ -191,7 +196,7 @@ $(() => {
 	$(window).on(`scroll`, () => {
 		if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
 			isScrolling = false;
-			scroll_bottom();
+			new_msg_popup.addClass(`d-none`);
 		}
 		var _cur_top = $(window).scrollTop();
 		if (_top < _cur_top) {

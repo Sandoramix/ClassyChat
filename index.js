@@ -32,7 +32,7 @@ io.on(`connection`, (socket) => {
 	});
 
 	socket.on(`new message`, (user, msg) => {
-		console.log(`[${ADDRESS}] new message: `, msg);
+		// console.log(`[${ADDRESS}] new message: `, msg);
 		io.emit(`new message`, user, msg);
 	});
 
@@ -49,7 +49,4 @@ io.on(`connection`, (socket) => {
 
 		nickname = username;
 	});
-	// setInterval(() => {
-	// 	io.emit(`new message`, `test`, `prova`);
-	// }, 1000);
 });
