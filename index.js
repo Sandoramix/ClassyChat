@@ -13,8 +13,6 @@ const http_server = http.createServer(app).listen(env.HTTP_PORT, env.HOST, () =>
 	console.log(`Running server on http://localhost:${env.HTTP_PORT}`);
 });
 
-const crypto = require(`crypto`);
-
 const io = new socket.Server(http_server, { pingTimeout: 180000, pingInterval: 25000 });
 
 app.use(express.static('./client/'));
@@ -29,7 +27,7 @@ io.on(`connection`, (socket) => {
 	var nickname;
 
 	socket.on(`disconnect`, (r) => {
-		console.log(`[${ADDRESS}] Disconnected - ${nickname}`);
+		console.log(`{${ADDRESS} : ${socket.id}}- Disconnected - ${nickname}`);
 		if (!nickname) return;
 		io.emit(`user disconnected`, nickname);
 		// console.log(`reason = ${r}`);
@@ -41,36 +39,37 @@ io.on(`connection`, (socket) => {
 	});
 
 	socket.on(`change username`, (old_user, new_user) => {
-		console.log(`[${ADDRESS}] New username | ${old_user} -> ${new_user}`);
+		console.log(`{${ADDRESS} : ${socket.id}}- New username | ${old_user} -> ${new_user}`);
 		io.emit(`change username`, old_user, new_user);
 
 		nickname = new_user;
 	});
 
 	socket.on(`user connected`, (username) => {
-		console.log(`[${ADDRESS}] Connected - ${username}`);
+		console.log(`{${ADDRESS} : ${socket.id}}- Connected - ${username}`);
 		io.emit(`user connected`, username);
 
 		nickname = username;
 	});
 
 	socket.on(`typing`, (username) => {
-		let hash = getHash(`${socket.id}:${username}`);
+		// let hash = getHash(`${socket.id}:${username}`);
 
-		io.emit(`typing`, username, hash);
+		io.emit(`typing`, username, socket.id);
 		// console.log(`[${ADDRESS}] Typing - ${hash}`);
 	});
 
 	socket.on(`not typing`, (username) => {
-		let hash = getHash(`${socket.id}:${username}`);
+		// let hash = getHash(`${socket.id}:${username}`);
 
-		io.emit(`not typing`, username, hash);
+		io.emit(`not typing`, username, socket.id);
 		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
 	});
 });
+// const crypto = require(`crypto`);
 
-function getHash(plaintext) {
-	var hasher = crypto.createHmac(`sha256`, env.crypto_secret);
+// function getHash(plaintext) {
+// 	var hasher = crypto.createHmac(`sha256`, env.crypto_secret);
 
-	return hasher.update(plaintext).digest(`base64`);
-}
+// 	return hasher.update(plaintext).digest(`base64`);
+// }
