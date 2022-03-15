@@ -9,36 +9,51 @@
 		<link rel="stylesheet" href="./css/bootstrap.min.css" />
 		<script src="./js/jquery.min.js"></script>
 		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/messages.css" />
+		<link rel="stylesheet" href="css/chat.css" />
+		<link rel="stylesheet" href="css/users-list.css" />
 	</head>
 	<body>
-		<div id="body">
-			<nav class="nav navbar fixed-top bg-dark d-flex p-3">
-				<div class="navbar-title text-info"><h4>ClassyChat</h4></div>
-				<div class="nav-right d-flex flex-row align-items-center">
-					<h4 class="mr-5 text-info">Username:&nbsp;</h4>
-					<button
-						id="changeNickBtn"
-						class="btn btn-success text-light font-weight-bold text-xxl-right"
-						style="width: 7.5em"
-					></button>
-				</div>
-			</nav>
-
-			<div class="filler"></div>
-
-			<div id="top">
-				<ul id="messages" class="d-flex flex-column"></ul>
+		<nav class="nav navbar fixed-top bg-dark d-flex p-3">
+			<div class="navbar-title text-info"><h4>ClassyChat</h4></div>
+			<div class="nav-right d-flex flex-row align-items-center">
+				<h4 class="mr-5 text-info">Username:&nbsp;</h4>
+				<button
+					id="changeNickBtn"
+					class="btn btn-success text-light font-weight-bold text-xxl-right"
+					style="width: 7.5em"
+				></button>
 			</div>
-			<div id="new-message" class="d-none"></div>
+		</nav>
+		<div id="container">
+			<div id="chat-body">
+				<ul id="messages" class="d-flex flex-column">
+					<li class="msg info">
+						<h5 class="right information text-secondary">
+							<div class="left">
+								<h4 class="time text-secondary">11:19</h4>
+								<h4 class="user text-danger">Sandoramix</h4>
+							</div>
+							Connected to chat!
+						</h5>
+					</li>
+				</ul>
 
-			<div id="typing-users"></div>
+				<div id="new-message" class="d-none"></div>
 
-			<form id="form">
-				<input id="input" autocomplete="off" minlength="1" maxlength="255" />
-				<button class="btn btn-secondary" id="btn_send">Send</button>
-			</form>
-			<label for="form"></label>
+				<div id="typing-users"></div>
+
+				<form id="form">
+					<input id="input" autocomplete="off" minlength="1" maxlength="255" />
+					<button class="btn btn-secondary" id="btn_send">Send</button>
+				</form>
+				<label for="form"></label>
+			</div>
+			<div id="users-list-body">
+				<div class="bg-secondary p-2">
+					<h5 class="text-warning">Utenti online</h5>
+				</div>
+				<ul id="online-users"></ul>
+			</div>
 		</div>
 
 		<script src="/socket.io/socket.io.js"></script>
