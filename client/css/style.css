@@ -1,46 +1,72 @@
-html {
-	min-height: 100vh !important;
-	padding: 0;
-	margin: 0;
-}
-#container {
-	display: flex;
-	flex-direction: row;
-	margin-top: 75px;
-	margin-bottom: 80px;
-	width: 100%;
-	height: calc(100vh - 75px);
+/* -------------------------------------- */
+:root {
+	--chat-bg: whitesmoke;
+	--msg-bg: rgb(80, 80, 80);
+	--msg-user-color: rgb(10, 150, 5);
+	--msg-content-color: whitesmoke;
+	--msg-time-color: rgb(0, 200, 0);
+
+	--msg-bg-log: rgb(75, 75, 75);
+	--msg-user-color-log: white;
+	--msg-content-color-log: whitesmoke;
+	--msg-time-color-log: rgb(201, 201, 201);
+
+	--msg-bg-owner: rgb(255, 200, 0);
+	--msg-user-color-owner: blueviolet;
+	--msg-content-color-owner: darkslategrey;
+	--msg-time-color-owner: black;
+
+	--user-typing-text: black;
 }
 
 body {
 	background-color: black;
-
-	height: 100vh;
-
+	min-height: 99.99vh;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-between;
 
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
+body::-webkit-scrollbar {
+	display: none;
+}
 
+/* -------------------------------------- */
+
+#container {
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	flex-grow: 10;
+	width: 100%;
+	top: 90px;
+	bottom: 80px;
+	max-height: calc(100vh - 170px);
+}
 nav {
-	height: 75px;
+	height: 90px;
 	z-index: 100;
 }
 
 /*=============================
 TYPING USERS*/
 #typing-users {
-	position: fixed;
+	position: absolute;
+	bottom: 90px;
 	right: 0;
-	bottom: 80px;
+	left: 0;
+	margin: auto auto;
+	width: 100%;
 
-	color: rgba(107, 107, 107, 0.9);
+	text-align: center;
+	font-weight: 800;
+	color: var(--user-typing-text);
 }
 /*=============================
 NEW MESSAGE POPUP*/
 #new-message {
+	z-index: 100;
 	position: fixed;
 	bottom: 85px;
 	right: 0px;
@@ -71,7 +97,7 @@ NEW MESSAGE POPUP*/
 #new-message:hover {
 	cursor: pointer;
 }
-
+/* -------------------------------------- */
 *::-webkit-scrollbar {
 	width: 12px;
 }
@@ -84,4 +110,19 @@ NEW MESSAGE POPUP*/
 	background-color: var(--bs-light);
 	border-radius: 20px;
 	border: 3px solid var(--bs-secondary);
+}
+/* -------------------------------------- */
+html {
+	min-height: 100vh !important;
+	background: var(--chat-bg);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul {
+	margin: 0;
+	padding: 0;
 }

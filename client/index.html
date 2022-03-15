@@ -6,58 +6,84 @@
 		<meta name="description" content="Simple socket.io chat for my class" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>ClassyChat</title>
-		<link rel="stylesheet" href="./css/bootstrap.min.css" />
-		<script src="./js/jquery.min.js"></script>
+		<script src="./js/jquery.min.js" defer></script>
+
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/chat.css" />
 		<link rel="stylesheet" href="css/users-list.css" />
+		<link rel="stylesheet" href="./css/bootstrap.min.css" />
 	</head>
 	<body>
-		<nav class="nav navbar fixed-top bg-dark d-flex p-3">
+		<nav class="navbar navbar-dark bg-dark p-2">
 			<div class="navbar-title text-info"><h4>ClassyChat</h4></div>
-			<div class="nav-right d-flex flex-row align-items-center">
-				<h4 class="mr-5 text-info">Username:&nbsp;</h4>
+			<div class="d-flex flex-column align-items-center">
+				<h4 class="mr-5 text-info">Username</h4>
 				<button
 					id="changeNickBtn"
-					class="btn btn-success text-light font-weight-bold text-xxl-right"
-					style="width: 7.5em"
+					class="btn btn-success text-white text-xxl-right"
+					style="width: 7.5em; font-weight: 800"
 				></button>
 			</div>
-		</nav>
-		<div id="container">
-			<div id="chat-body">
-				<ul id="messages" class="d-flex flex-column">
-					<li class="msg info">
-						<h5 class="right information text-secondary">
-							<div class="left">
-								<h4 class="time text-secondary">11:19</h4>
-								<h4 class="user text-danger">Sandoramix</h4>
-							</div>
-							Connected to chat!
-						</h5>
-					</li>
-				</ul>
 
-				<div id="new-message" class="d-none"></div>
+			<button
+				class="navbar-toggler pos-f-t"
+				type="button"
+				data-toggle="collapse"
+				data-target="#users-list-body"
+				aria-controls="users-list-body"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-				<div id="typing-users"></div>
-
-				<form id="form">
-					<input id="input" autocomplete="off" minlength="1" maxlength="255" />
-					<button class="btn btn-secondary" id="btn_send">Send</button>
-				</form>
-				<label for="form"></label>
-			</div>
-			<div id="users-list-body">
+			<div id="users-list-body" class="d-none">
 				<div class="bg-secondary p-2">
 					<h5 class="text-warning">Utenti online</h5>
 				</div>
 				<ul id="online-users"></ul>
 			</div>
+		</nav>
+
+		<div id="container">
+			<div id="chat-body">
+				<ul id="messages">
+					<!-- <li class="msg log">
+						<h4 class="user">Sandoramix</h4>
+						<hr />
+						<h5 class="content">Sasha connected to chat!</h5>
+						<h5 class="time">11:19</h5>
+					</li>
+					<li class="msg">
+						<h4 class="user">Sasha</h4>
+						<hr />
+						<h5 class="content">
+							ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+						</h5>
+						<h5 class="time">11:19</h5>
+					</li>
+
+					<li class="msg owner">
+						<h4 class="user">Sandoramix</h4>
+						<hr />
+						<h5 class="content">
+							ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+						</h5>
+						<h5 class="time">11:20</h5>
+					</li> -->
+				</ul>
+
+				<div id="new-message" class="d-none"></div>
+			</div>
 		</div>
+		<form id="form">
+			<input id="input" autocomplete="off" minlength="1" maxlength="255" placeholder="Message..." />
+			<button class="btn btn-secondary" id="btn_send">Send</button>
+		</form>
+		<div id="typing-users"></div>
 
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="/socket.io/socket.io.js" defer></script>
 
-		<script src="client.js"></script>
+		<script src="client.js" defer></script>
 	</body>
 </html>

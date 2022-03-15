@@ -29,7 +29,7 @@ new_msg_popup.on(`click`, () => {
 input.on(`input`, (ev) => {
 	let text = input.val();
 	if (text.trim() == ``) {
-		socket.emit(`not typing`, username);
+		socket.emit(`not typing`);
 		return;
 	}
 	socket.emit(`typing`, username);
@@ -40,48 +40,34 @@ input.on(`input`, (ev) => {
 //---------------------------
 //Socket.io event listeners
 socket.on(`change username`, (old_username, new_username) => {
-	let msg = setInfoPart(old_username);
+	let msg = newMessage(``, `SYSTEM`, `${old_username} has changed it's username into '${new_username}'`, true);
 
-	//-------------------------------------
-	//CONTENT
-	let content = $(`<h6>`);
-	content.addClass(`right information text-info`);
-	content.text(`Has changed it's username into \`${new_username}\``);
-	msg.append(content);
 	//-------------------------------------
 	messages.append(msg);
 	scroll_bottom();
 });
 
-socket.on(`new message`, (username, message) => {
-	let msg = setInfoPart(username, true);
-
+socket.on(`new message`, (id, username, message) => {
 	//-------------------------------------
-	//CONTENT
-	let content = $(`<h5>`);
-	content.addClass(`right content`);
-	content.text(message);
-	msg.append(content);
-	//-------------------------------------
-
-	messages.append(msg);
+	messages.append(newMessage(id, username, message));
 	scroll_bottom();
 });
 
 //user connected
 socket.emit(`user connected`, username);
 socket.on(`user connected`, (username) => {
-	conn_disc_part(username, true);
+	messages.append(newMessage(``, `SYSTEM`, `${username} connected to chat!`, true));
+	scroll_bottom();
 });
 
 //user disconnected
 socket.on(`user disconnected`, (username) => {
-	conn_disc_part(username, false);
+	messages.append(newMessage(``, `SYSTEM`, `${username} disconnected from chat!`, true));
 });
-socket.on(`typing`, (user, id) => {
+socket.on(`typing`, (username, id) => {
 	if (typing_users.size > 1 || typing_users.has(id)) return;
 
-	let msg = `${user.length > 10 ? `${user.substring(0, 9)}...` : user} sta scrivendo...`;
+	let msg = `${username.length > 10 ? `${username.substring(0, 9)}...` : username} sta scrivendo...`;
 	let div = $(`<div>`);
 	div.text(msg);
 	typing_users_cnt.append(div);
@@ -89,7 +75,7 @@ socket.on(`typing`, (user, id) => {
 	typing_users.set(id, div);
 });
 
-socket.on(`not typing`, (user, id) => {
+socket.on(`not typing`, (id) => {
 	if (!typing_users.has(id)) return;
 	console.log();
 	typing_users.get(id).remove();
@@ -98,20 +84,6 @@ socket.on(`not typing`, (user, id) => {
 
 //--------------------------------
 //UTILS
-//send message if user disconnected/connected
-function conn_disc_part(user, flag) {
-	let msg = setInfoPart(user);
-	//-------------------------------------
-	//CONTENT
-	let content = $(`<h5>`);
-	content.addClass(`right information text-secondary`);
-	content.text(flag ? `Connected to chat! ` : `Disconnected from chat!`);
-	msg.append(content);
-	//-------------------------------------
-
-	messages.append(msg);
-	scroll_bottom();
-}
 
 //send message
 function submit(e) {
@@ -130,72 +102,66 @@ function submit(e) {
 }
 
 //set message info [left] part with or without separator [flag]
-function setInfoPart(nickname, flag) {
-	let msg = $(`<li>`);
-	msg.addClass(`msg`);
+function newMessage(id, username, message, system_message) {
+	let msg = $(`<li>`, { class: `msg ${system_message ? `log` : ``} ${id === socket.id ? `owner` : ``}` });
 
 	//INFO
-	let left = $(`<div>`);
-	left.addClass(`left`);
 
-	let time = $(`<h4>`);
-	let user = $(`<h4>`);
-	let separator = $(`<h4>`);
+	let user = $(`<h4>`, { class: `user` });
+	let time = $(`<h5>`, { class: `time` });
+
+	//user
+	user.text(username);
+
+	//Content
+	let content = $(`<h5>`, { class: `content` });
+	content.text(message);
 
 	//time
 	let date = new Date();
-
 	time.text(`${date.getHours().toString().padStart(2, `0`)}:${date.getMinutes().toString().padStart(2, `0`)}`);
-	time.addClass(`time text-secondary`);
 
-	left.append(time);
-
-	//user
-	user.text(nickname);
-
-	user.addClass(`user text-danger`);
-	left.append(user);
-
-	//separator
-	if (flag) {
-		separator.text(`:`);
-		separator.addClass(`separator`);
-
-		left.append(separator);
+	msg.append(user);
+	if (!system_message) {
+		msg.append($(`<hr />`));
 	}
-	msg.append(left);
+	msg.append(content, time);
 
 	return msg;
 }
 
 //get username [from localStorage or prompt if missing]
-function getUsername() {
+function getUsername(old_username) {
 	let user = null;
-	while (user == `null` || !user || user.trim() == '') {
+	while (user == `null` || !user || user.trim() == '' || user.length > 10) {
 		let tmp = localStorage.getItem(`username`);
 		if (tmp && (tmp != `null` || tmp.trim() != ``)) {
 			user = tmp;
 			break;
 		}
-		user = prompt('Username: ', username);
+		user = prompt('Username: (max 10 characters) ', username) || old_username;
+
+		console.log(user);
+
+		if (user.length > 10) {
+			alert(`Maximum username's characters length = 10`);
+		}
 	}
 	user = user.replace(` `, `_`);
-	setUsername(user);
+
+	username = user;
+	localStorage.setItem(`username`, user);
 
 	changeNickButton.text(user.length > 10 ? `${user.substring(0, 9)}...` : user);
 	titleUpdate(user);
 
 	return user;
 }
-function setUsername(user) {
-	username = user;
-	localStorage.setItem(`username`, user);
-}
 //change username
 function newUsername() {
 	let old = username || null;
 	localStorage.removeItem(`username`);
-	username = getUsername();
+	username = getUsername(old);
 
 	if (old == username) return;
 	socket.emit(`change username`, old, username);
@@ -213,7 +179,7 @@ function scroll_bottom() {
 		return;
 	}
 	new_msg_popup.addClass(`d-none`);
-	$(`html`).scrollTop(messages.height());
+	messages.scrollTop(messages.prop(`scrollHeight`));
 }
 
 // new message popup if user is scrolling
@@ -227,12 +193,12 @@ $(() => {
 	var _top = $(window).scrollTop();
 	var _direction;
 
-	$(window).on(`scroll`, () => {
-		if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+	messages.on(`scroll`, () => {
+		if (messages.scrollTop() + messages.height() >= messages.prop(`scrollHeight`)) {
 			isScrolling = false;
 			new_msg_popup.addClass(`d-none`);
 		}
-		var _cur_top = $(window).scrollTop();
+		var _cur_top = messages.scrollTop();
 		if (_top < _cur_top) {
 			_direction = 'down';
 		} else {

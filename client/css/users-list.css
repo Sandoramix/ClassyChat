@@ -1,5 +1,5 @@
 #users-list-body {
-	margin-top: 75px;
+	margin-top: 90px;
 	font-size: 2.5rem;
 	margin-left: 10px;
 	min-width: 10ch;
@@ -7,3 +7,4 @@
 	border-radius: 15px;
 	background-color: var(--bs-light);
 }
+/* -------------------------------------- */
