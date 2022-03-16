@@ -122,7 +122,7 @@ NEW MESSAGE POPUP*/
 }
 
 /*----------*/
-@media (pointer: none), (pointer: coarse) {
+@media (pointer: none), (pointer: coarse), (pointer: fine) {
 	#body {
 		max-height: 87vh;
 	}
