@@ -1,86 +1,93 @@
-/* -------------------------------------- */
+@import '../scss/bootstrap.scss';
+
+/*----------*/
 :root {
-	--chat-bg: whitesmoke;
-	--msg-bg: rgb(80, 80, 80);
-	--msg-user-color: rgb(10, 150, 5);
-	--msg-content-color: whitesmoke;
-	--msg-time-color: rgb(0, 200, 0);
-
-	--msg-bg-log: rgb(75, 75, 75);
-	--msg-user-color-log: white;
-	--msg-content-color-log: whitesmoke;
-	--msg-time-color-log: rgb(201, 201, 201);
-
-	--msg-bg-owner: rgb(255, 200, 0);
-	--msg-user-color-owner: blueviolet;
-	--msg-content-color-owner: darkslategrey;
-	--msg-time-color-owner: black;
-
-	--user-typing-text: black;
+	--text: #111b21;
+	--username-btn: #084227;
+	--username-btn-text: #fafa00;
+	--meta-theme-color: var(--page-bg);
 }
 
-body {
-	background-color: black;
-	min-height: 99.99vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+:root body.theme-light {
+	--page-bg: #efeae2;
 
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--chat-bg: var(--page-bg);
+
+	--msg-bg: #ffffff;
+	--msg-user-color: #25d366;
+	--msg-content-color: var(--text);
+	--msg-time-color: var(--text);
+	--msg-separator-color: var(--text);
+
+	--msg-bg-log: #494949;
+	--msg-user-color-log: whitesmoke;
+	--msg-content-color-log: #f7e48f;
+	--msg-time-color-log: #e3e3e3;
+
+	--msg-bg-owner: #d8fed5;
+	--msg-user-color-owner: #0c5947;
+	--msg-content-color-owner: var(--text);
+	--msg-time-color-owner: var(--text);
+	--msg-separator-color-owner: var(--text);
+
+	--form-bg: #bebebe;
+
+	--user-typing-text: #00d09e;
+
+	--new-msg-bg: #7cff7c;
+	--new-msg-text-color: #6500ad;
 }
-body::-webkit-scrollbar {
-	display: none;
+:root body.theme-dark {
+	--page-bg: #222222;
 }
 
-/* -------------------------------------- */
+/*----------*/
 
-#container {
-	position: absolute;
-	display: flex;
-	flex-direction: row;
-	flex-grow: 10;
-	width: 100%;
-	top: 90px;
-	bottom: 80px;
-	max-height: calc(100vh - 170px);
-}
 nav {
 	height: 90px;
 	z-index: 100;
 }
-
+#meta-theme {
+	content: var(--meta-theme-color);
+}
+#changeNickButton {
+	background: var(--username-btn);
+	color: var(--username-btn-text);
+	width: fit-content;
+	font-weight: 600;
+}
 /*=============================
 TYPING USERS*/
-#typing-users {
+#typingUsersContainer {
 	position: absolute;
 	bottom: 90px;
-	right: 0;
-	left: 0;
-	margin: auto auto;
-	width: 100%;
+	right: 1rem;
 
 	text-align: center;
 	font-weight: 800;
 	color: var(--user-typing-text);
+	justify-items: end;
 }
 /*=============================
 NEW MESSAGE POPUP*/
 #new-message {
 	z-index: 100;
 	position: fixed;
-	bottom: 85px;
-	right: 0px;
+	bottom: 100px;
+	left: 0.1rem;
 	aspect-ratio: 1;
-	width: 50px;
+	width: 45px;
+	font-weight: 800;
+	font-size: large;
 }
 #new-message::before {
 	content: '';
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-color: var(--bs-success);
-	width: 50px;
-	height: 50px;
+	background-color: var(--new-msg-bg);
+	width: 45px;
+	height: 45px;
 	border-radius: 50% 50% 0 50%;
 	transform: rotate(45deg);
 }
@@ -91,13 +98,15 @@ NEW MESSAGE POPUP*/
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	color: var(--bs-warning);
+	color: var(--new-msg-text-color);
 }
 
 #new-message:hover {
 	cursor: pointer;
 }
-/* -------------------------------------- */
+
+/*----------*/
+
 *::-webkit-scrollbar {
 	width: 12px;
 }
@@ -111,18 +120,44 @@ NEW MESSAGE POPUP*/
 	border-radius: 20px;
 	border: 3px solid var(--bs-secondary);
 }
-/* -------------------------------------- */
-html {
+
+/*----------*/
+
+body {
+	background-color: var(--page-bg) !important;
 	min-height: 100vh !important;
-	background: var(--chat-bg);
+	min-height: -webkit-fill-available;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
-h1,
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+/*----------*/
+
+html {
+	min-height: -webkit-fill-available;
+	background: var(--page-bg);
+}
+/* ----------*/
+.msg > h1,
 h2,
 h3,
 h4,
 h5,
-h6,
-ul {
+h6 {
+	align-items: center;
+}
+
+* {
+	scroll-behavior: smooth;
 	margin: 0;
 	padding: 0;
+	margin-block-start: 0;
+	margin-block-end: 0;
 }
