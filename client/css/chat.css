@@ -1,27 +1,69 @@
 #chat-body {
+	position: absolute;
 	background-color: var(--chat-bg);
 	width: 100%;
-
+	width: 100%;
+	top: 90px;
+	bottom: 80px;
+	max-height: calc(100% - 170px);
 	display: flex;
 	flex-direction: column;
 }
 
-/* -------------------------------------- */
-#messages {
+/*----------*/
+
+#messagesContainer {
 	display: flex;
 	flex-direction: column;
-	gap: 0.2ch;
+	gap: 0.5ch;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	max-height: calc(100vh - 180px);
 	flex: 10 1 auto;
 	padding: 0.55rem;
+	padding-bottom: 50px;
+	margin-bottom: 0;
 }
-/* #messages > .msg[class='log']:nth-child(odd) {
+/* #messagesContainer > .msg[class='log']:nth-child(odd) {
 	background: #e0e0e0;
 } */
 
-/* -------------------------------------- */
+/* -------- 
+FORM INPUT & SUBMIT BTN*/
+#form {
+	background: var(--form-bg);
+	padding: 0.1rem;
+	position: relative;
+
+	display: flex;
+	height: 11ch;
+	box-sizing: border-box;
+}
+#messageInputField {
+	border: none;
+	padding: 0 1rem;
+	flex-grow: 1;
+	border-radius: 0.5ch;
+	margin: 0.25rem;
+	font-size: 150%;
+	resize: none;
+	text-align: start;
+
+	line-height: 80px;
+}
+
+#messageInputField:focus {
+	outline: none;
+}
+
+#sendMessageButton {
+	width: 10rem;
+	font-size: larger;
+	font-weight: 500;
+	margin: 0.25ch 0;
+}
+/*----------
+DEFAULT MESSAGE APPEARANCE*/
 .msg * {
 	display: flex;
 }
@@ -34,8 +76,14 @@
 	overflow-wrap: anywhere;
 	padding: 0.5rem;
 	border-radius: 0 1rem 1rem 1rem;
-	min-width: 15ch;
+	min-width: 25%;
+	max-width: 90%;
+
+	background-color: var(--msg-bg);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11),
+		0 6px 8px rgba(0, 0, 0, 0.11), 0 8px 16px rgba(0, 0, 0, 0.11);
 }
+
 .msg::before {
 	content: '';
 	position: absolute;
@@ -45,40 +93,54 @@
 	left: -0.5rem;
 	clip-path: polygon(50% 0, 100% 100%, 0 100%);
 	transform: rotate(180deg);
-}
-.user {
-	font-weight: 800;
-}
-/* -------------------------------------- */
 
-.msg {
-	background-color: var(--msg-bg);
-}
-.msg::before {
 	background: var(--msg-bg);
 }
 
 .msg hr {
+	border: solid 0.1ch var(--msg-separator-color);
 	margin: 0.5ch 0;
 }
 
+.msg-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 30px;
+}
+
 .user {
+	font-weight: 800;
 	justify-content: start;
 	color: var(--msg-user-color);
+	height: 100%;
+}
+.user,
+.time,
+.content {
+	margin: 0;
 }
 .content {
+	white-space: pre-wrap;
 	justify-content: start;
 	color: var(--msg-content-color);
 }
 .time {
 	justify-content: end;
-	margin: 0;
 	color: var(--msg-time-color);
+	height: 100%;
+	margin: 0 0 0 2.5rem;
+	width: max-content;
 }
 
-/* -------------------------------------- */
+/*MSG_LOG----------*/
+
 .msg.log {
 	background-color: var(--msg-bg-log);
+	min-width: 50%;
+	flex-direction: row-reverse;
+	justify-content: space-between;
 }
 .msg.log::before {
 	background: var(--msg-bg-log);
@@ -87,16 +149,22 @@
 	display: none;
 }
 
+.msg.log msg-header {
+	justify-content: left;
+}
+
 .msg.log .user {
 	display: none;
 }
 .msg.log .content {
+	justify-content: start;
 	color: var(--msg-content-color-log);
 }
 .msg.log .time {
 	color: var(--msg-time-color-log);
 }
-/* -------------------------------------- */
+
+/*MSG_OWNER----------*/
 
 .msg.owner {
 	margin-left: auto;
@@ -119,6 +187,13 @@
 	transform: rotate(180deg);
 	background-color: var(--msg-bg-owner);
 }
+.msg.owner hr {
+	border-color: var(--msg-separator-color-owner);
+}
+
+.msg.owner .msg-header {
+	flex-direction: row-reverse;
+}
 
 .msg.owner .user {
 	justify-content: end;
@@ -129,35 +204,9 @@
 }
 
 .msg.owner .time {
+	justify-content: start;
 	color: var(--msg-time-color-owner);
+	margin: 0 2.5rem 0 0;
 }
 
-/* -------------------------------------- 
-FORM INPUT & SUBMIT BTN*/
-#form {
-	background: rgba(0, 0, 0, 0.35);
-	padding: 0.1rem;
-	position: relative;
-
-	display: flex;
-	height: 11ch;
-	box-sizing: border-box;
-}
-#input {
-	border: none;
-	padding: 0 1rem;
-	flex-grow: 1;
-	border-radius: 0.5ch;
-	margin: 0.25rem;
-}
-#input:focus {
-	outline: none;
-}
-
-#btn_send {
-	width: 10rem;
-	font-size: larger;
-	font-weight: 500;
-	margin: 0.25ch 0;
-}
-/* -------------------------------------- */
+/*----------*/
