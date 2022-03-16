@@ -1,0 +1,22 @@
+/* #users-list-body {
+	margin-top: 90px;
+	font-size: 2.5rem;
+	margin-left: 10px;
+	min-width: 10ch;
+	width: 15vw;
+	border-radius: 15px;
+	background-color: var(--bs-light);
+} */
+/* -------------------------------------- */
+#side {
+	position: absolute;
+	right: 0;
+	transform: translateX(-50%);
+	animation: transform ease-in-out 200ms;
+}
+
+#side.active {
+	display: block;
+	transform: translateX(50%);
+	animation: transform ease-in-out 200ms;
+}
