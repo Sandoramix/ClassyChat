@@ -122,10 +122,15 @@ NEW MESSAGE POPUP*/
 }
 
 /*----------*/
-
-body {
+@media (pointer: none), (pointer: coarse) {
+	#body {
+		max-height: 87vh;
+	}
+}
+#body {
 	background-color: var(--page-bg) !important;
-	min-height: 100vh !important;
+	min-height: 100vh;
+	min-height: fill-available;
 	min-height: -webkit-fill-available;
 
 	display: flex;
@@ -140,7 +145,7 @@ body::-webkit-scrollbar {
 
 /*----------*/
 
-html {
+#html {
 	min-height: -webkit-fill-available;
 	background: var(--page-bg);
 }

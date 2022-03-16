@@ -1,13 +1,10 @@
 #chat-body {
-	position: absolute;
 	background-color: var(--chat-bg);
-	width: 100%;
-	width: 100%;
-	top: 90px;
-	bottom: 80px;
-	max-height: calc(100% - 170px);
+	height: calc(99vh - 180px);
+	max-height: calc(99vh - 180px);
 	display: flex;
 	flex-direction: column;
+	justify-content: start;
 }
 
 /*----------*/
