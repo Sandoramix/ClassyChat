@@ -1,38 +1,58 @@
 //---------------------------
-const body = $(`#body`);
-const messages = $(`#messages`);
-const form = $(`#form`);
-const input = $(`#input`);
-const changeNickButton = $(`#changeNickBtn`);
-const submitButton = $(`#btn_send`);
-const typing_users_cnt = $(`#typing-users`);
+const messagesContainer = $(`#messagesContainer`);
+const messageForm = $(`#form`);
+const messageInputField = $(`#messageInputField`);
+const _messageInputField = document.getElementById(`messageInputField`);
 
-const new_msg_popup = $(`#new-message`);
+const changeNicknameButton = $(`#changeNickButton`);
+const sendMessageButton = $(`#sendMessageButton`);
+const typingUsersContainer = $(`#typingUsersContainer`);
+
+const newMessageAlert = $(`#new-message`);
 var isScrolling = false;
 
 const socket = io();
 var username = getUsername();
 
-var typing_users = new Map();
+var typingUsersList = new Map();
 //---------------------------
 //Element's events
-changeNickButton.on(`click`, newUsername);
+changeNicknameButton.on(`click`, newUsername);
 
-form.on(`submit`, (x) => submit(x));
-submitButton.on(`click`, submit);
+messageForm.on(`submit`, (x) => submit(x));
+sendMessageButton.on(`click`, submit);
 
-new_msg_popup.on(`click`, () => {
+newMessageAlert.on(`click`, () => {
 	isScrolling = false;
-	scroll_bottom();
+	messagesScrollBottom();
 });
 
-input.on(`input`, (ev) => {
-	let text = input.val();
+/*----------*/
+messageInputField.on(`input`, (ev) => {
+	let text = messageInputField.val();
 	if (text.trim() == ``) {
 		socket.emit(`not typing`);
 		return;
 	}
 	socket.emit(`typing`, username);
+});
+/*----------*/
+let altDownKey = false;
+
+messageInputField.on(`keydown`, (e) => {
+	if (e.altKey) altDownKey = true;
+
+	if (e.code !== `Enter`) return;
+	let content = messageInputField.val();
+	let pointer_pos = messageInputField.prop(`selectionStart`) || 0;
+	content = `${content.substring(0, pointer_pos)}\n${content.substring(pointer_pos, content.length)}`;
+
+	e.preventDefault();
+	return altDownKey ? messageInputField.val(content) : submit();
+});
+messageInputField.on(`keyup`, (e) => {
+	altDownKey = false;
+	scrollBottom(messageInputField);
 });
 
 //---------------------------
@@ -42,62 +62,63 @@ input.on(`input`, (ev) => {
 socket.on(`change username`, (old_username, new_username) => {
 	let msg = newMessage(``, `SYSTEM`, `${old_username} has changed it's username into '${new_username}'`, true);
 
-	//-------------------------------------
-	messages.append(msg);
-	scroll_bottom();
+	messagesContainer.append(msg);
+	messagesScrollBottom();
 });
 
 socket.on(`new message`, (id, username, message) => {
-	//-------------------------------------
-	messages.append(newMessage(id, username, message));
-	scroll_bottom();
+	messagesContainer.append(newMessage(id, username, message));
+	messagesScrollBottom();
 });
 
 //user connected
 socket.emit(`user connected`, username);
 socket.on(`user connected`, (username) => {
-	messages.append(newMessage(``, `SYSTEM`, `${username} connected to chat!`, true));
-	scroll_bottom();
+	messagesContainer.append(newMessage(``, `SYSTEM`, `${username} connected to chat!`, true));
+	messagesScrollBottom();
 });
 
 //user disconnected
 socket.on(`user disconnected`, (username) => {
-	messages.append(newMessage(``, `SYSTEM`, `${username} disconnected from chat!`, true));
+	messagesContainer.append(newMessage(``, `SYSTEM`, `${username} disconnected from chat!`, true));
 });
 socket.on(`typing`, (username, id) => {
-	if (typing_users.size > 1 || typing_users.has(id)) return;
+	if (typingUsersList.size > 1 || typingUsersList.has(id)) return;
 
 	let msg = `${username.length > 10 ? `${username.substring(0, 9)}...` : username} sta scrivendo...`;
 	let div = $(`<div>`);
 	div.text(msg);
-	typing_users_cnt.append(div);
+	typingUsersContainer.append(div);
 
-	typing_users.set(id, div);
+	typingUsersList.set(id, div);
 });
 
 socket.on(`not typing`, (id) => {
-	if (!typing_users.has(id)) return;
+	if (!typingUsersList.has(id)) return;
 	console.log();
-	typing_users.get(id).remove();
-	typing_users.delete(id);
+	typingUsersList.get(id).remove();
+	typingUsersList.delete(id);
 });
 
 //--------------------------------
 //UTILS
 
 //send message
-function submit(e) {
-	if (e) {
+function submit(event) {
+	if (event) {
 		//prevent from page redirection
-		e.preventDefault();
+		event.preventDefault();
 	}
-	text = input.val().toString();
+	console.log(messageInputField.val());
+
+	text = messageInputField.val();
 	if (text.trim() == ``) return;
 	text = text.substring(0, 255);
 	socket.emit(`new message`, username, text);
-	input.val(``);
+	messageInputField.val(``);
+
 	isScrolling = false;
-	scroll_bottom();
+	messagesScrollBottom();
 	socket.emit(`not typing`, username);
 }
 
@@ -108,24 +129,24 @@ function newMessage(id, username, message, system_message) {
 	//INFO
 
 	let user = $(`<h4>`, { class: `user` });
-	let time = $(`<h5>`, { class: `time` });
+	let time = $(`<h6>`, { class: `time` });
 
 	//user
 	user.text(username);
-
-	//Content
-	let content = $(`<h5>`, { class: `content` });
-	content.text(message);
 
 	//time
 	let date = new Date();
 	time.text(`${date.getHours().toString().padStart(2, `0`)}:${date.getMinutes().toString().padStart(2, `0`)}`);
 
-	msg.append(user);
-	if (!system_message) {
-		msg.append($(`<hr />`));
-	}
-	msg.append(content, time);
+	//msg header
+	let msg_header = $(`<div>`, { class: `msg-header` });
+	msg_header.append(user, time);
+
+	//msg content
+	let content = $(`<h5>`, { class: `content` });
+	content.text(message);
+
+	msg.append(msg_header, $(`<hr />`), content);
 
 	return msg;
 }
@@ -152,7 +173,7 @@ function getUsername(old_username) {
 	username = user;
 	localStorage.setItem(`username`, user);
 
-	changeNickButton.text(user.length > 10 ? `${user.substring(0, 9)}...` : user);
+	changeNicknameButton.text(user.length > 10 ? `${user.substring(0, 9)}...` : user);
 	titleUpdate(user);
 
 	return user;
@@ -173,36 +194,40 @@ function titleUpdate(user) {
 }
 
 //scroll to bottom
-function scroll_bottom() {
+function messagesScrollBottom() {
 	if (isScrolling) {
 		newMessagePopup();
 		return;
 	}
-	new_msg_popup.addClass(`d-none`);
-	messages.scrollTop(messages.prop(`scrollHeight`));
+	newMessageAlert.addClass(`d-none`);
+	scrollBottom(messagesContainer);
+}
+
+function scrollBottom(element) {
+	element.scrollTop(element.prop(`scrollHeight`));
 }
 
 // new message popup if user is scrolling
 function newMessagePopup() {
 	if (!isScrolling) return;
-	new_msg_popup.removeClass(`d-none`);
+	newMessageAlert.removeClass(`d-none`);
 }
 
 //anon function [scroll direction && user scroll detect]
+var scroll_direction = ``;
 $(() => {
-	var _top = $(window).scrollTop();
-	var _direction;
+	let _top = $(window).scrollTop();
 
-	messages.on(`scroll`, () => {
-		if (messages.scrollTop() + messages.height() >= messages.prop(`scrollHeight`)) {
+	messagesContainer.on(`scroll`, () => {
+		if (messagesContainer.scrollTop() + messagesContainer.height() >= messagesContainer.prop(`scrollHeight`) && !isScrolling) {
 			isScrolling = false;
-			new_msg_popup.addClass(`d-none`);
+			newMessageAlert.addClass(`d-none`);
 		}
-		var _cur_top = messages.scrollTop();
+		var _cur_top = messagesContainer.scrollTop();
 		if (_top < _cur_top) {
-			_direction = 'down';
+			scroll_direction = `down|none`;
 		} else {
-			_direction = 'up';
+			scroll_direction = `up`;
 			isScrolling = true;
 		}
 		_top = _cur_top;
