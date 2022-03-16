@@ -4,45 +4,65 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge " />
 		<meta name="description" content="Simple socket.io chat for my class" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0" />
+		<link rel="apple-touch-icon" href="static/iphone-icon.png" />
+		<meta name="theme-color" id="meta-theme" />
 		<title>ClassyChat</title>
-		<link rel="stylesheet" href="./css/bootstrap.min.css" />
-		<script src="./js/jquery.min.js"></script>
+
+		<script src="./js/jquery.min.js" defer></script>
 		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/messages.css" />
+		<link rel="stylesheet" href="css/chat.css" />
+		<link rel="stylesheet" href="css/users-list.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 	</head>
-	<body>
-		<div id="body">
-			<nav class="nav navbar fixed-top bg-dark d-flex p-3">
-				<div class="navbar-title text-info"><h4>ClassyChat</h4></div>
-				<div class="nav-right d-flex flex-row align-items-center">
-					<h4 class="mr-5 text-info">Username:&nbsp;</h4>
-					<button
-						id="changeNickBtn"
-						class="btn btn-success text-light font-weight-bold text-xxl-right"
-						style="width: 7.5em"
-					></button>
-				</div>
-			</nav>
-
-			<div class="filler"></div>
-
-			<div id="top">
-				<ul id="messages" class="d-flex flex-column"></ul>
+	<body class="theme-light">
+		<nav class="navbar navbar-dark bg-dark p-2">
+			<div class="d-flex flex-column align-items-center">
+				<h4 class="mr-5 text-info">Username</h4>
+				<button id="changeNickButton" class="btn text-xxl-right"></button>
 			</div>
+
+			<button
+				class="navbar-toggler pos-f-t"
+				type="button"
+				data-toggle="collapse"
+				data-target="#users-list-body"
+				aria-controls="users-list-body"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div id="users-list-body" class="d-none">
+				<div class="bg-secondary p-2">
+					<h5 class="text-warning">Utenti online</h5>
+				</div>
+				<ul id="online-users"></ul>
+			</div>
+		</nav>
+
+		<div id="chat-body">
+			<ul id="messagesContainer"></ul>
+
 			<div id="new-message" class="d-none"></div>
-
-			<div id="typing-users"></div>
-
-			<form id="form">
-				<input id="input" autocomplete="off" minlength="1" maxlength="255" />
-				<button class="btn btn-secondary" id="btn_send">Send</button>
-			</form>
-			<label for="form"></label>
 		</div>
+		<form id="form">
+			<textarea
+				name="messageInputField"
+				id="messageInputField"
+				autocomplete="off"
+				minlength="1"
+				maxlength="255"
+				placeholder="Message..."
+			></textarea>
 
-		<script src="/socket.io/socket.io.js"></script>
+			<button class="btn btn-secondary" id="sendMessageButton">Send</button>
+		</form>
+		<div id="typingUsersContainer"></div>
 
-		<script src="client.js"></script>
+		<script src="/socket.io/socket.io.js" defer></script>
+
+		<script src="main.js" defer></script>
 	</body>
 </html>

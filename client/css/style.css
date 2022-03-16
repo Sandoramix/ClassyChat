@@ -1,83 +1,93 @@
-html {
-	min-height: 100vh !important;
-	background-color: var(--bs-dark);
+@import '../scss/bootstrap.scss';
+
+/*----------*/
+:root {
+	--text: #111b21;
+	--username-btn: #084227;
+	--username-btn-text: #fafa00;
+	--meta-theme-color: var(--page-bg);
 }
-body {
-	background-color: var(--bs-light);
-	height: 100%;
-	margin: 0 0 0 12px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-	background-attachment: scroll;
-	scroll-behavior: smooth;
+
+:root body.theme-light {
+	--page-bg: #efeae2;
+
+	--chat-bg: var(--page-bg);
+
+	--msg-bg: #ffffff;
+	--msg-user-color: #25d366;
+	--msg-content-color: var(--text);
+	--msg-time-color: var(--text);
+	--msg-separator-color: var(--text);
+
+	--msg-bg-log: #494949;
+	--msg-user-color-log: whitesmoke;
+	--msg-content-color-log: #f7e48f;
+	--msg-time-color-log: #e3e3e3;
+
+	--msg-bg-owner: #d8fed5;
+	--msg-user-color-owner: #0c5947;
+	--msg-content-color-owner: var(--text);
+	--msg-time-color-owner: var(--text);
+	--msg-separator-color-owner: var(--text);
+
+	--form-bg: #bebebe;
+
+	--user-typing-text: #00d09e;
+
+	--new-msg-bg: #7cff7c;
+	--new-msg-text-color: #6500ad;
 }
+:root body.theme-dark {
+	--page-bg: #222222;
+}
+
+/*----------*/
 
 nav {
-	height: 75px;
-	z-index: 10;
+	height: 90px;
+	z-index: 100;
 }
-.filler {
-	height: 75px;
+#meta-theme {
+	content: var(--meta-theme-color);
 }
-
-#form {
-	background: rgba(0, 0, 0, 0.35);
-	padding: 0.1rem;
-	position: fixed;
-	bottom: 0;
-	left: 12px;
-	right: 0;
-	display: flex;
-	height: 5rem;
-	box-sizing: border-box;
-}
-#input {
-	border: none;
-	padding: 0 1rem;
-	flex-grow: 1;
-	border-radius: 0.5ch;
-	margin: 0.25rem;
-}
-#input:focus {
-	outline: none;
-}
-
-#btn_send {
-	width: 10rem;
-	font-size: larger;
-	font-weight: 500;
-	margin: 0.25ch 0;
+#changeNickButton {
+	background: var(--username-btn);
+	color: var(--username-btn-text);
+	width: fit-content;
+	font-weight: 600;
 }
 /*=============================
 TYPING USERS*/
-#typing-users {
-	position: fixed;
-	right: 0;
-	bottom: 80px;
+#typingUsersContainer {
+	position: absolute;
+	bottom: 90px;
+	right: 1rem;
 
-	color: rgba(107, 107, 107, 0.9);
+	text-align: center;
+	font-weight: 800;
+	color: var(--user-typing-text);
+	justify-items: end;
 }
 /*=============================
 NEW MESSAGE POPUP*/
 #new-message {
+	z-index: 100;
 	position: fixed;
-	bottom: 85px;
-	right: 0px;
+	bottom: 100px;
+	left: 0.1rem;
 	aspect-ratio: 1;
-	width: 50px;
+	width: 45px;
+	font-weight: 800;
+	font-size: large;
 }
 #new-message::before {
 	content: '';
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-color: var(--bs-success);
-	width: 50px;
-	height: 50px;
+	background-color: var(--new-msg-bg);
+	width: 45px;
+	height: 45px;
 	border-radius: 50% 50% 0 50%;
 	transform: rotate(45deg);
 }
@@ -88,23 +98,66 @@ NEW MESSAGE POPUP*/
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	color: var(--bs-warning);
+	color: var(--new-msg-text-color);
 }
 
 #new-message:hover {
 	cursor: pointer;
 }
 
-body::-webkit-scrollbar {
+/*----------*/
+
+*::-webkit-scrollbar {
 	width: 12px;
 }
 
-body::-webkit-scrollbar-track {
-	background: var(--bs-dark);
+*::-webkit-scrollbar-track {
+	background: var(--bs-secondary);
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
 	background-color: var(--bs-light);
 	border-radius: 20px;
-	border: 3px solid var(--bs-dark);
+	border: 3px solid var(--bs-secondary);
+}
+
+/*----------*/
+
+body {
+	background-color: var(--page-bg) !important;
+	min-height: 100vh !important;
+	min-height: -webkit-fill-available;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+/*----------*/
+
+html {
+	min-height: -webkit-fill-available;
+	background: var(--page-bg);
+}
+/* ----------*/
+.msg > h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	align-items: center;
+}
+
+* {
+	scroll-behavior: smooth;
+	margin: 0;
+	padding: 0;
+	margin-block-start: 0;
+	margin-block-end: 0;
 }

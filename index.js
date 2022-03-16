@@ -17,52 +17,54 @@ const io = new socket.Server(http_server, { pingTimeout: 180000, pingInterval: 2
 
 app.use(express.static('./client/'));
 
-app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use('/scss', express.static(path.join(__dirname, 'node_modules/bootstrap/scss/')));
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css/')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 
-io.on(`connection`, (socket) => {
-	const ADDRESS = socket.handshake.address;
+io.on(`connection`, (st) => {
+	const ADDRESS = st.handshake.address;
+	const id = st.id;
 
 	var nickname;
 
-	socket.on(`disconnect`, (r) => {
-		console.log(`{${ADDRESS} : ${socket.id}}- Disconnected - ${nickname}`);
+	st.on(`disconnect`, (r) => {
+		//console.log(`{${ADDRESS} : ${id}}- Disconnected - ${nickname}`);
 		if (!nickname) return;
 		io.emit(`user disconnected`, nickname);
 		// console.log(`reason = ${r}`);
 	});
 
-	socket.on(`new message`, (user, msg) => {
+	st.on(`new message`, (user, msg) => {
 		// console.log(`[${ADDRESS}] new message: `, msg);
-		io.emit(`new message`, user, msg);
+		io.emit(`new message`, id, user, msg);
 	});
 
-	socket.on(`change username`, (old_user, new_user) => {
-		console.log(`{${ADDRESS} : ${socket.id}}- New username | ${old_user} -> ${new_user}`);
+	st.on(`change username`, (old_user, new_user) => {
+		console.log(`{${ADDRESS} : ${id}}- New username | ${old_user} -> ${new_user}`);
 		io.emit(`change username`, old_user, new_user);
 
 		nickname = new_user;
 	});
 
-	socket.on(`user connected`, (username) => {
-		console.log(`{${ADDRESS} : ${socket.id}}- Connected - ${username}`);
+	st.on(`user connected`, (username) => {
+		//console.log(`{${ADDRESS} : ${id}}- Connected - ${username}`);
 		io.emit(`user connected`, username);
 
 		nickname = username;
 	});
 
-	socket.on(`typing`, (username) => {
-		// let hash = getHash(`${socket.id}:${username}`);
+	st.on(`typing`, (username) => {
+		// let hash = getHash(`${id}:${username}`);
 
-		io.emit(`typing`, username, socket.id);
+		io.emit(`typing`, username, id);
 		// console.log(`[${ADDRESS}] Typing - ${hash}`);
 	});
 
-	socket.on(`not typing`, (username) => {
-		// let hash = getHash(`${socket.id}:${username}`);
+	st.on(`not typing`, () => {
+		// let hash = getHash(`${id}:${username}`);
 
-		io.emit(`not typing`, username, socket.id);
+		io.emit(`not typing`, id);
 		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
 	});
 });
