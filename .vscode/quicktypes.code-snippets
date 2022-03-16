@@ -10,7 +10,7 @@
 		"scope": "javascript,typescript",
 		"prefix": "log",
 		"body": [
-			"console.log('$1');",
+			"console.log($1);",
 			"$2"
 		],
 		"description": "Log output to console"
@@ -18,7 +18,7 @@
 	"Comment line": {
 		"scope": "css,javascript",
 		"prefix": "cc",
-		"body": "\n/* -------------------------------------- */\n$2",
+		"body": "\n/*----------*/\n$2",
 		"description": "Comment line"
 	}
 }
