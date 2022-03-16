@@ -122,7 +122,13 @@ NEW MESSAGE POPUP*/
 }
 
 /*----------*/
+
 @media (pointer: none), (pointer: coarse), (pointer: fine) {
+	@media screen and (max-width: 480px) {
+		#body {
+			max-height: 100vh;
+		}
+	}
 	#body {
 		max-height: 87vh;
 	}
