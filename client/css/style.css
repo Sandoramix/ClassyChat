@@ -123,21 +123,15 @@ NEW MESSAGE POPUP*/
 
 /*----------*/
 
-@media (pointer: none), (pointer: coarse), (pointer: fine) {
-	@media screen and (max-width: 480px) {
-		#body {
-			max-height: 100vh;
-		}
-	}
+@media screen and (pointer: none), screen and (pointer: coarse), screen and (max-width: 480px) {
 	#body {
-		max-height: 87vh;
+		min-height: -webkit-fill-available;
 	}
 }
 #body {
 	background-color: var(--page-bg) !important;
 	min-height: 100vh;
 	min-height: fill-available;
-	min-height: -webkit-fill-available;
 
 	display: flex;
 	flex-direction: column;
