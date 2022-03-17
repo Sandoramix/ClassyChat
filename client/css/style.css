@@ -57,23 +57,13 @@ nav {
 	font-weight: 600;
 }
 /*=============================
-TYPING USERS*/
-#typingUsersContainer {
-	position: absolute;
-	bottom: 90px;
-	right: 1rem;
 
-	text-align: center;
-	font-weight: 800;
-	color: var(--user-typing-text);
-	justify-items: end;
-}
 /*=============================
 NEW MESSAGE POPUP*/
 #new-message {
 	z-index: 100;
-	position: fixed;
-	bottom: 100px;
+	position: absolute;
+	bottom: 11ch;
 	left: 0.1rem;
 	aspect-ratio: 1;
 	width: 45px;

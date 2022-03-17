@@ -44,22 +44,24 @@
 
 		<div id="chat-body">
 			<ul id="messagesContainer"></ul>
-
-			<div id="new-message" class="d-none"></div>
 		</div>
-		<form id="form">
-			<textarea
-				name="messageInputField"
-				id="messageInputField"
-				autocomplete="off"
-				minlength="1"
-				maxlength="255"
-				placeholder="Message..."
-			></textarea>
+		<div id="footer">
+			<div id="new-message" class="d-none"></div>
+			<div id="typingUsersContainer"></div>
 
-			<button class="btn btn-secondary" id="sendMessageButton">Send</button>
-		</form>
-		<div id="typingUsersContainer"></div>
+			<form id="form">
+				<textarea
+					name="messageInputField"
+					id="messageInputField"
+					autocomplete="off"
+					minlength="1"
+					maxlength="255"
+					placeholder="Message..."
+				></textarea>
+
+				<button class="btn btn-secondary" id="sendMessageButton">Send</button>
+			</form>
+		</div>
 
 		<div id="side">
 			<button id="theme"></button>

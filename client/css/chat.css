@@ -23,8 +23,22 @@
 }
 /* #messagesContainer > .msg[class='log']:nth-child(odd) {
 	background: #e0e0e0;
-} */
+} 
+TYPING USERS*/
+#typingUsersContainer {
+	position: absolute;
+	bottom: 11ch;
+	right: 1rem;
 
+	text-align: center;
+	font-weight: 800;
+	color: var(--user-typing-text);
+	justify-items: end;
+}
+
+#footer {
+	position: relative;
+}
 /* -------- 
 FORM INPUT & SUBMIT BTN*/
 #form {
