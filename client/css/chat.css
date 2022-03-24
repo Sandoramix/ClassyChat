@@ -1,7 +1,8 @@
 #chat-body {
 	background-color: var(--chat-bg);
-	height: calc(100vh - 180px);
-	max-height: calc(100vh - 180px);
+
+	max-height: calc(var(--vh, 1vh) * 100 - 180px);
+	height: calc(var(--vh, 1vh) * 100 - 180px);
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
@@ -15,16 +16,13 @@
 	gap: 0.5rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	max-height: calc(100vh - 180px);
+	max-height: calc(var(--vh, 1vh) * 100 - 180px);
 	flex: 10 1 auto;
 	padding: 15px;
 	margin-bottom: 50px;
 }
-/* #messagesContainer > .msg[class='log']:nth-child(odd) {
-	background: #e0e0e0;
-} 
-TYPING USERS*/
-#typingUsersContainer {
+
+TYPING USERS*/ #typingUsersContainer {
 	position: absolute;
 	bottom: 11ch;
 	right: 1rem;
@@ -51,6 +49,10 @@ FORM INPUT & SUBMIT BTN*/
 	display: flex;
 	height: 11ch;
 	box-sizing: border-box;
+}
+#form button {
+	background-color: var(--navbar-bg) !important;
+	color: var(--navbar-text);
 }
 #messageInputField {
 	border: none;
