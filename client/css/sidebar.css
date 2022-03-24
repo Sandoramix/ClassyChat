@@ -8,15 +8,110 @@
 	background-color: var(--bs-light);
 } */
 /* -------------------------------------- */
-#side {
+#sidebarToggler {
+	position: relative !important;
+	width: 45px;
+	height: 45px;
+}
+#sidebarButton {
+	top: 0;
+	left: 0;
 	position: absolute;
+	width: 45px;
+	height: 45px;
+	fill: var(--toggler-color) !important;
+}
+#sidebarButton > * {
+	width: 100%;
+	height: 100%;
+}
+#sidebar {
+	padding: 0.5rem;
+	height: calc(100% - 90px);
+	top: 90px;
+	position: absolute;
+	width: 15rem;
+
 	right: 0;
-	transform: translateX(-50%);
-	animation: transform ease-in-out 200ms;
+	z-index: 25;
+
+	background: var(--sidebar-bg);
+	transform: translateX(150%);
+	transition: transform 300ms ease-in-out;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-#side.active {
+#sidebar.active {
+	transform: translateX(0%);
+	transition: transform 300ms ease-in-out;
+}
+
+#sidebar .top {
+	justify-content: start;
+}
+#sidebar .bottom {
+	justify-content: end;
+}
+
+/*----------*/
+.dropbtn {
+	width: 100%;
+	padding: 0.5rem;
+	border: none;
+	cursor: pointer;
+}
+.dropbtn:hover {
+	background-color: var(--sidebar-online-users-hover) !important;
+}
+
+#onlineUsersContainer {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	max-height: 50%;
+}
+
+#onlineUsersButton {
+	width: 100%;
+
+	color: var(--sidebar-text-color);
+	background-color: var(--sidebar-online-users-bg1);
+}
+
+#onlineUsers {
+	display: none;
+	position: absolute;
+	background-color: var(--sidebar-online-users-bg1);
+	color: var(--sidebar-text-color);
+	height: 400px;
+	width: 100%;
+	min-width: 160px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 0;
+	text-align: center;
+}
+
+#onlineUsers li {
+	list-style: none;
+}
+#onlineUsers li:nth-child(odd) {
+	background-color: var(--sidebar-online-users-bg2);
+}
+#onlineUsersContainer a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
 	display: block;
-	transform: translateX(50%);
-	animation: transform ease-in-out 200ms;
+}
+#onlineUsersContainer a:hover {
+	background-color: #ddd;
+}
+.show {
+	display: block !important;
 }

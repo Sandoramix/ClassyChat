@@ -1,7 +1,7 @@
 #chat-body {
 	background-color: var(--chat-bg);
-	height: calc(99vh - 180px);
-	max-height: calc(99vh - 180px);
+	height: calc(100vh - 180px);
+	max-height: calc(100vh - 180px);
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
@@ -12,14 +12,13 @@
 #messagesContainer {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5ch;
+	gap: 0.5rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	max-height: calc(100vh - 180px);
 	flex: 10 1 auto;
-	padding: 0.55rem;
-	padding-bottom: 50px;
-	margin-bottom: 0;
+	padding: 15px;
+	margin-bottom: 50px;
 }
 /* #messagesContainer > .msg[class='log']:nth-child(odd) {
 	background: #e0e0e0;
@@ -29,11 +28,14 @@ TYPING USERS*/
 	position: absolute;
 	bottom: 11ch;
 	right: 1rem;
-
-	text-align: center;
+	width: 100%;
+	text-align: end;
 	font-weight: 800;
 	color: var(--user-typing-text);
 	justify-items: end;
+}
+#typingUsersContainer > * {
+	position: relative;
 }
 
 #footer {
@@ -91,8 +93,7 @@ DEFAULT MESSAGE APPEARANCE*/
 	max-width: 90%;
 
 	background-color: var(--msg-bg);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11),
-		0 6px 8px rgba(0, 0, 0, 0.11), 0 8px 16px rgba(0, 0, 0, 0.11);
+	box-shadow: rgb(0 0 0 / 25%) 0px 2px 2px 0px, rgb(0 0 0 / 25%) 0px 2px 5px 1px, rgb(0 0 0 / 50%) 0px -2px 0px inset;
 }
 
 .msg::before {

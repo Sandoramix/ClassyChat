@@ -14,31 +14,22 @@
 		<link rel="stylesheet" href="css/chat.css" />
 		<link rel="stylesheet" href="css/sidebar.css" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/theme-switch.css" />
 	</head>
-	<body id="body" class="theme-light">
-		<nav class="navbar navbar-dark bg-dark p-2">
+	<body id="body">
+		<nav id="navbar" class="navbar p-2">
 			<div class="d-flex flex-column align-items-center">
-				<h4 class="mr-5 text-info">Username</h4>
+				<h4 class="mr-5">Username</h4>
 				<button id="changeNickButton" class="btn text-xxl-right"></button>
 			</div>
 
-			<button
-				class="navbar-toggler pos-f-t"
-				type="button"
-				data-toggle="collapse"
-				data-target="#users-list-body"
-				aria-controls="users-list-body"
-				aria-expanded="false"
-				aria-label="Toggle navigation"
-			>
-				<span class="navbar-toggler-icon"></span>
-			</button>
-
-			<div id="users-list-body" class="d-none">
-				<div class="bg-secondary p-2">
-					<h5 class="text-warning">Utenti online</h5>
-				</div>
-				<ul id="online-users"></ul>
+			<div class="btn" id="sidebarToggler">
+				<svg id="sidebarButton" xmlns="http://www.w3.org/2000/svg" class="bi bi-sliders2" viewBox="0 0 16 16">
+					<path
+						fill-rule="evenodd"
+						d="M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5ZM12 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Zm-6.5 2A.5.5 0 0 1 6 6v1.5h8.5a.5.5 0 0 1 0 1H6V10a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5ZM1 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 1 8Zm9.5 2a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V13H1.5a.5.5 0 0 1 0-1H10v-1.5a.5.5 0 0 1 .5-.5Zm1.5 2.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"
+					/>
+				</svg>
 			</div>
 		</nav>
 
@@ -63,12 +54,33 @@
 			</form>
 		</div>
 
-		<div id="side">
-			<button id="theme"></button>
+		<div id="sidebar">
+			<div class="top">
+				<div id="onlineUsersContainer">
+					<button id="onlineUsersButton" class="dropbtn">Online users</button>
+					<ul id="onlineUsers" class="userlist-main"></ul>
+				</div>
+			</div>
+			<div class="bottom">
+				<div id="theme">
+					<input type="checkbox" id="themeSwitch" />
+
+					<div id="themeButton">
+						<label for="themeSwitch">
+							<div class="toggle"></div>
+							<div id="themeText">
+								<p class="light">Light</p>
+								<p class="dark">Dark</p>
+							</div>
+						</label>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<script src="/socket.io/socket.io.js" defer></script>
 
 		<script src="main.js" defer></script>
+		<script src="listeners.js" defer></script>
 	</body>
 </html>

@@ -1,4 +1,8 @@
 //---------------------------
+
+/*----------
+DECLARATIONS*/
+
 const messagesContainer = $(`#messagesContainer`);
 const messageForm = $(`#form`);
 const messageInputField = $(`#messageInputField`);
@@ -11,51 +15,35 @@ const typingUsersContainer = $(`#typingUsersContainer`);
 const newMessageAlert = $(`#new-message`);
 var isScrolling = false;
 
+/*----------*/
+const sidebar = $(`#sidebar`);
+const sidebarToggler = $(`#sidebarToggler`);
+const sidebarPanel = $(`#sidebarPanel`);
+
+/*----------*/
+const onlineUsersContainer = $(`#onlineUsersContainer`);
+const onlineUsersButton = $(`#onlineUsersButton`);
+const onlineUsersList = $(`#onlineUsers`);
+/*----------*/
+
+const themeCheckbox = $(`#themeSwitch`);
+
+/*----------*/
+
+themeCheckbox.on(`click`, () => {
+	let isChecked = themeCheckbox.is(`:checked`);
+	if (isChecked) {
+		$(body).addClass(`darkTheme`);
+	} else {
+		$(body).removeClass(`darkTheme`);
+	}
+});
+/*----------*/
+
 const socket = io();
 var username = getUsername();
 
 var typingUsersList = new Map();
-//---------------------------
-//Element's events
-changeNicknameButton.on(`click`, newUsername);
-
-messageForm.on(`submit`, (x) => submit(x));
-sendMessageButton.on(`click`, submit);
-
-newMessageAlert.on(`click`, () => {
-	isScrolling = false;
-	messagesScrollBottom();
-});
-
-/*----------*/
-messageInputField.on(`input`, (ev) => {
-	let text = messageInputField.val();
-	if (text.trim() == ``) {
-		socket.emit(`not typing`);
-		return;
-	}
-	socket.emit(`typing`, username);
-});
-/*----------*/
-let altDownKey = false;
-
-messageInputField.on(`keydown`, (e) => {
-	if (e.altKey) altDownKey = true;
-
-	if (e.code !== `Enter`) return;
-	let content = messageInputField.val();
-	let pointer_pos = messageInputField.prop(`selectionStart`) || 0;
-	content = `${content.substring(0, pointer_pos)}\n${content.substring(pointer_pos, content.length)}`;
-
-	e.preventDefault();
-	return altDownKey ? messageInputField.val(content) : submit();
-});
-messageInputField.on(`keyup`, (e) => {
-	altDownKey = false;
-	scrollBottom(messageInputField);
-});
-
-//---------------------------
 
 //---------------------------
 //Socket.io event listeners
@@ -95,13 +83,36 @@ socket.on(`typing`, (username, id) => {
 
 socket.on(`not typing`, (id) => {
 	if (!typingUsersList.has(id)) return;
-	console.log();
+
 	typingUsersList.get(id).remove();
 	typingUsersList.delete(id);
 });
 
+socket.on(`online users`, (onlineUsers) => {
+	onlineUsers.forEach((user) => {
+		let id = user[0];
+		let username = user[1];
+
+		if (!onlineUsersList.has($(`#${id}`)).length) {
+			onlineUsersList.append($(`<li>`, { id }).text(username));
+			return;
+		}
+		$(`#${id}`).text(username);
+	});
+
+	let ids = $.map(onlineUsers, ([el]) => {
+		return el;
+	});
+	onlineUsersList.children(`li`).each(() => {
+		if (!ids.includes($(this).attr(`id`))) {
+			$(this).remove();
+		}
+	});
+});
 //--------------------------------
-//UTILS
+
+/*----------
+MAIN FUNCTIONS*/
 
 //send message
 function submit(event) {
@@ -109,11 +120,15 @@ function submit(event) {
 		//prevent from page redirection
 		event.preventDefault();
 	}
-	console.log(messageInputField.val());
 
-	text = messageInputField.val();
+	let text = messageInputField.val().toString();
 	if (text.trim() == ``) return;
 	text = text.substring(0, 255);
+
+	while (text.includes(`\n\n\n`)) {
+		text = text.replace(`\n\n`, `\n`);
+	}
+
 	socket.emit(`new message`, username, text);
 	messageInputField.val(``);
 
@@ -150,7 +165,6 @@ function newMessage(id, username, message, system_message) {
 
 	return msg;
 }
-
 //get username [from localStorage or prompt if missing]
 function getUsername(old_username) {
 	let user = null;
@@ -161,8 +175,6 @@ function getUsername(old_username) {
 			break;
 		}
 		user = prompt('Username: (max 10 characters) ', username) || old_username;
-
-		console.log(user);
 
 		if (user.length > 10) {
 			alert(`Maximum username's characters length = 10`);
@@ -188,6 +200,9 @@ function newUsername() {
 	socket.emit(`change username`, old, username);
 }
 
+/*----------
+UTILS FUNCTIONS*/
+
 //update page title with username
 function titleUpdate(user) {
 	document.title = `ClassyChat - ${user}`;
@@ -206,30 +221,8 @@ function messagesScrollBottom() {
 function scrollBottom(element) {
 	element.scrollTop(element.prop(`scrollHeight`));
 }
-
 // new message popup if user is scrolling
 function newMessagePopup() {
 	if (!isScrolling) return;
 	newMessageAlert.removeClass(`d-none`);
 }
-
-//anon function [scroll direction && user scroll detect]
-var scroll_direction = ``;
-$(() => {
-	let _top = $(window).scrollTop();
-
-	messagesContainer.on(`scroll`, () => {
-		if (messagesContainer.scrollTop() + messagesContainer.height() >= messagesContainer.prop(`scrollHeight`) && !isScrolling) {
-			isScrolling = false;
-			newMessageAlert.addClass(`d-none`);
-		}
-		var _cur_top = messagesContainer.scrollTop();
-		if (_top < _cur_top) {
-			scroll_direction = `down|none`;
-		} else {
-			scroll_direction = `up`;
-			isScrolling = true;
-		}
-		_top = _cur_top;
-	});
-});
