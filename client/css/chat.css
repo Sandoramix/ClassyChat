@@ -22,7 +22,8 @@
 	margin-bottom: 50px;
 }
 
-TYPING USERS*/ #typingUsersContainer {
+/*TYPING USERS*/
+#typingUsersContainer {
 	position: absolute;
 	bottom: 11ch;
 	right: 1rem;
@@ -51,7 +52,7 @@ FORM INPUT & SUBMIT BTN*/
 	box-sizing: border-box;
 }
 #form button {
-	background-color: var(--navbar-bg) !important;
+	background-color: var(--form-btn-bg) !important;
 	color: var(--navbar-text);
 }
 #messageInputField {
@@ -95,7 +96,7 @@ DEFAULT MESSAGE APPEARANCE*/
 	max-width: 90%;
 
 	background-color: var(--msg-bg);
-	box-shadow: rgb(0 0 0 / 25%) 0px 2px 2px 0px, rgb(0 0 0 / 25%) 0px 2px 5px 1px, rgb(0 0 0 / 50%) 0px -2px 0px inset;
+	box-shadow: var(--msg-inside-shadow) 0px 2px 2px 0px, var(--msg-outside-shadow) 0px -1px 0px inset;
 }
 
 .msg::before {

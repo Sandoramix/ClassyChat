@@ -20,9 +20,13 @@
 	--sidebar-online-users-bg2: #004b3e;
 	--sidebar-online-users-hover: #004b3e;
 
-	--toggler-color: black;
+	--toggler-bg: #535061;
+	--toggler-color: whitesmoke;
 
 	--chat-bg: var(--page-bg);
+
+	--msg-inside-shadow: rgb(0 0 0 / 50%);
+	--msg-outside-shadow: rgb(0 0 0 / 25%);
 
 	--msg-bg: #ffffff;
 	--msg-user-color: #25d366;
@@ -42,8 +46,8 @@
 	--msg-separator-color-owner: var(--text);
 
 	--form-bg: #bebebe;
-	--form-btn-bg: #4c5b67;
-	--user-typing-text: #00d09e;
+	--form-btn-bg: #08ac84;
+	--user-typing-text: var(--text);
 
 	--new-msg-bg: #7cff7c;
 	--new-msg-text-color: #6500ad;
@@ -52,7 +56,7 @@
 :root body.darkTheme {
 	--meta-theme-color: var(--page-bg);
 
-	--page-bg: #0b141a;
+	--page-bg: rgb(20, 40, 55);
 
 	--text: #ffffff;
 	--username-btn: #fafa00;
@@ -67,9 +71,13 @@
 	--sidebar-online-users-bg2: #0b141a;
 	--sidebar-online-users-hover: #014237;
 
+	--toggler-bg: gray;
 	--toggler-color: white;
 
 	--chat-bg: var(--page-bg);
+
+	--msg-inside-shadow: rgba(255, 255, 255, 0.25);
+	--msg-outside-shadow: rgba(255, 255, 255, 0.5);
 
 	--msg-bg: #202c33;
 	--msg-user-color: #01c194;
@@ -88,8 +96,8 @@
 	--msg-time-color-owner: var(--text);
 	--msg-separator-color-owner: var(--text);
 
-	--form-bg: #182025;
-	--form-btn-bg: #4c5b67;
+	--form-bg: rgb(0, 0, 0);
+	--form-btn-bg: #697177;
 	--user-typing-text: #00d09e;
 
 	--new-msg-bg: #7cff7c;
