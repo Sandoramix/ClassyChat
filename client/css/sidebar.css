@@ -40,7 +40,6 @@
 
 	background: var(--sidebar-bg);
 
-	transition: left 300ms ease-in-out;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -48,10 +47,6 @@
 
 #sidebar.active {
 	visibility: visible;
-
-	/* left: calc(var(--vw, 1vw) * 100 - 15rem); */
-
-	transition: visibility 300ms ease-in-out;
 }
 
 #sidebar .top {
