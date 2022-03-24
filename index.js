@@ -22,6 +22,12 @@ app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 
+var onlineUsers = new Map();
+
+setInterval(() => {
+	io.emit(`online users`, [...onlineUsers]);
+}, 5000);
+
 io.on(`connection`, (st) => {
 	const ADDRESS = st.handshake.address;
 	const id = st.id;
@@ -33,6 +39,7 @@ io.on(`connection`, (st) => {
 		if (!nickname) return;
 		io.emit(`user disconnected`, nickname);
 		// console.log(`reason = ${r}`);
+		onlineUsers.delete(id);
 	});
 
 	st.on(`new message`, (user, msg) => {
@@ -45,6 +52,7 @@ io.on(`connection`, (st) => {
 		io.emit(`change username`, old_user, new_user);
 
 		nickname = new_user;
+		onlineUsers.set(id, nickname);
 	});
 
 	st.on(`user connected`, (username) => {
@@ -52,6 +60,7 @@ io.on(`connection`, (st) => {
 		io.emit(`user connected`, username);
 
 		nickname = username;
+		onlineUsers.set(id, nickname);
 	});
 
 	st.on(`typing`, (username) => {
@@ -66,6 +75,9 @@ io.on(`connection`, (st) => {
 
 		io.emit(`not typing`, id);
 		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
+	});
+	st.on(`get online users`, () => {
+		st.emit(`online users`, [...onlineUsers]);
 	});
 });
 // const crypto = require(`crypto`);

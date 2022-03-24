@@ -1,0 +1,60 @@
+#themeSwitch {
+	position: absolute;
+	top: -10000px;
+}
+:root {
+	--width: 100px;
+	--height: calc(var(--width) * 0.4);
+	--font-size: calc(var(--height) * 0.25);
+}
+#themeButton {
+	width: var(--width);
+	height: var(--height);
+}
+#themeButton label {
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 10em;
+	position: relative;
+	cursor: pointer;
+}
+#themeButton label .toggle {
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	border-radius: 10em;
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#themeSwitch:checked + #themeButton label .toggle {
+	transform: translateX(100%);
+	background-color: #535061;
+}
+
+#themeButton .dark,
+#themeButton .light {
+	color: whitesmoke;
+}
+#themeButton label {
+	display: flex;
+	align-items: center;
+}
+#themeText {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 15%;
+}
+#themeText p {
+	display: flex;
+	font-size: var(--font-size);
+
+	line-height: 100%;
+	margin-bottom: 0;
+	user-select: none;
+	font-weight: bold;
+}
+/*----------*/

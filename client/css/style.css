@@ -1,15 +1,26 @@
 @import '../scss/bootstrap.scss';
 
 /*----------*/
+
 :root {
+	--meta-theme-color: var(--page-bg);
+
+	--page-bg: #efeae2;
+
 	--text: #111b21;
 	--username-btn: #084227;
 	--username-btn-text: #fafa00;
-	--meta-theme-color: var(--page-bg);
-}
 
-:root body.theme-light {
-	--page-bg: #efeae2;
+	--navbar-bg: #08ac84;
+	--navbar-text: black;
+
+	--sidebar-bg: #00806a;
+	--sidebar-text-color: white;
+	--sidebar-online-users-bg1: #005e4e;
+	--sidebar-online-users-bg2: #004b3e;
+	--sidebar-online-users-hover: #004b3e;
+
+	--toggler-color: black;
 
 	--chat-bg: var(--page-bg);
 
@@ -31,22 +42,68 @@
 	--msg-separator-color-owner: var(--text);
 
 	--form-bg: #bebebe;
-
+	--form-btn-bg: #4c5b67;
 	--user-typing-text: #00d09e;
 
 	--new-msg-bg: #7cff7c;
 	--new-msg-text-color: #6500ad;
 }
-:root body.theme-dark {
-	--page-bg: #222222;
+
+:root body.darkTheme {
+	--meta-theme-color: var(--page-bg);
+
+	--page-bg: #0b141a;
+
+	--text: #ffffff;
+	--username-btn: #fafa00;
+	--username-btn-text: #0b141a;
+
+	--navbar-bg: #202c33;
+	--navbar-text: var(--text);
+
+	--sidebar-bg: #111b21;
+	--sidebar-text-color: white;
+	--sidebar-online-users-bg1: #202c33;
+	--sidebar-online-users-bg2: #0b141a;
+	--sidebar-online-users-hover: #014237;
+
+	--toggler-color: white;
+
+	--chat-bg: var(--page-bg);
+
+	--msg-bg: #202c33;
+	--msg-user-color: #01c194;
+	--msg-content-color: var(--text);
+	--msg-time-color: var(--text);
+	--msg-separator-color: var(--text);
+
+	--msg-bg-log: #494949;
+	--msg-user-color-log: whitesmoke;
+	--msg-content-color-log: #f7e48f;
+	--msg-time-color-log: #e3e3e3;
+
+	--msg-bg-owner: #005c4c;
+	--msg-user-color-owner: white;
+	--msg-content-color-owner: var(--text);
+	--msg-time-color-owner: var(--text);
+	--msg-separator-color-owner: var(--text);
+
+	--form-bg: #182025;
+	--form-btn-bg: #4c5b67;
+	--user-typing-text: #00d09e;
+
+	--new-msg-bg: #7cff7c;
+	--new-msg-text-color: #6500ad;
 }
 
 /*----------*/
-
-nav {
+#navbar {
 	height: 90px;
-	z-index: 100;
+	z-index: 10;
+	background: var(--navbar-bg);
+	color: var(--navbar-text);
 }
+
 #meta-theme {
 	content: var(--meta-theme-color);
 }
@@ -57,23 +114,13 @@ nav {
 	font-weight: 600;
 }
 /*=============================
-TYPING USERS*/
-#typingUsersContainer {
-	position: absolute;
-	bottom: 90px;
-	right: 1rem;
 
-	text-align: center;
-	font-weight: 800;
-	color: var(--user-typing-text);
-	justify-items: end;
-}
 /*=============================
 NEW MESSAGE POPUP*/
 #new-message {
 	z-index: 100;
-	position: fixed;
-	bottom: 100px;
+	position: absolute;
+	bottom: 11ch;
 	left: 0.1rem;
 	aspect-ratio: 1;
 	width: 45px;
@@ -123,11 +170,11 @@ NEW MESSAGE POPUP*/
 
 /*----------*/
 
-body {
+#body {
 	background-color: var(--page-bg) !important;
-	min-height: 100vh !important;
-	min-height: -webkit-fill-available;
-
+	float: none;
+	min-height: 100vh;
+	float: none !important;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -141,8 +188,18 @@ body::-webkit-scrollbar {
 /*----------*/
 
 html {
-	min-height: -webkit-fill-available;
+	width: 100vw;
+	width: calc(var(--vw, 1vw) * 100);
+	height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+	height: calc(var(--vh, 1vh) * 100);
+
+	max-width: 100vw;
+	max-width: calc(var(--vw, 1vw) * 100);
+	max-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+	max-height: calc(var(--vh, 1vh) * 100);
+
 	background: var(--page-bg);
+	float: none !important;
 }
 /* ----------*/
 .msg > h1,
