@@ -19,19 +19,16 @@ newMessageAlert.on(`click`, () => {
 
 /*----------
 NON/TYPING event*/
-messageInputField.on(`input`, (ev) => {
-	let text = messageInputField.val();
-	if (text.trim() == ``) {
-		socket.emit(`not typing`);
-		return;
-	}
-	socket.emit(`typing`, username);
-});
+var typingTimeout;
+
 /*----------
 Permit newline [ALT+ENTER] in text messages*/
 let altDownKey = false;
 
 messageInputField.on(`keydown`, (e) => {
+	clearTimeout(typingTimeout);
+	socket.emit(`typing`, username);
+
 	if (e.altKey) altDownKey = true;
 
 	if (e.code !== `Enter`) return;
@@ -44,6 +41,15 @@ messageInputField.on(`keydown`, (e) => {
 });
 
 messageInputField.on(`keyup`, (e) => {
+	typingTimeout = setTimeout(() => {
+		socket.emit(`not typing`);
+	}, 5000);
+
+	if (messageInputField.val().trim() == ``) {
+		clearTimeout(typingTimeout);
+		socket.emit(`not typing`);
+	}
+
 	altDownKey = false;
 	scrollBottom(messageInputField);
 });
