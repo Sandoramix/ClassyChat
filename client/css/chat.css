@@ -22,7 +22,8 @@
 	margin-bottom: 50px;
 }
 
-TYPING USERS*/ #typingUsersContainer {
+/*TYPING USERS*/
+#typingUsersContainer {
 	position: absolute;
 	bottom: 11ch;
 	right: 1rem;
