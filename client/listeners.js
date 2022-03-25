@@ -19,19 +19,17 @@ newMessageAlert.on(`click`, () => {
 
 /*----------
 NON/TYPING event*/
-messageInputField.on(`input`, (ev) => {
-	let text = messageInputField.val();
-	if (text.trim() == ``) {
-		socket.emit(`not typing`);
-		return;
-	}
-	socket.emit(`typing`, username);
-});
+var typingTimeout;
+
 /*----------
 Permit newline [ALT+ENTER] in text messages*/
 let altDownKey = false;
 
+//KEYDOWN
 messageInputField.on(`keydown`, (e) => {
+	clearTimeout(typingTimeout);
+	socket.emit(`typing`, username);
+
 	if (e.altKey) altDownKey = true;
 
 	if (e.code !== `Enter`) return;
@@ -43,9 +41,32 @@ messageInputField.on(`keydown`, (e) => {
 	return altDownKey ? messageInputField.val(content) : submit();
 });
 
+//KEYUP
 messageInputField.on(`keyup`, (e) => {
+	typingTimeout = setTimeout(() => {
+		socket.emit(`not typing`);
+	}, 5000);
+
+	if (messageInputField.val().trim() == ``) {
+		clearTimeout(typingTimeout);
+		socket.emit(`not typing`);
+	}
+
 	altDownKey = false;
 	scrollBottom(messageInputField);
+});
+
+/*----------
+Theme mode toggler*/
+themeCheckbox.on(`click`, () => {
+	let isChecked = themeCheckbox.is(`:checked`);
+	if (isChecked) {
+		localStorage.setItem(`themeMode`, `dark`);
+		$(body).addClass(`darkTheme`);
+	} else {
+		localStorage.setItem(`themeMode`, `light`);
+		$(body).removeClass(`darkTheme`);
+	}
 });
 
 /*----------
@@ -54,7 +75,8 @@ sidebarToggler.on(`click`, () => {
 	sidebar.toggleClass(`active`);
 });
 
-/*----------*/
+/*----------
+Online users toggler*/
 onlineUsersButton.on(`click`, () => {
 	socket.emit(`get online users`);
 	onlineUsersList.toggleClass(`show`);
@@ -69,6 +91,8 @@ $(document).on(`click`, (event) => {
 		sidebar.removeClass(`active`);
 	}
 
+	/*----------
+	Online users toggler*/
 	if (!onlineUsersContainer.has(target).length && !onlineUsersList.has(target).length && !onlineUsersButton.has(target).length) {
 		onlineUsersList.removeClass(`show`);
 	}
@@ -101,15 +125,46 @@ $(() => {
 		_top = _cur_top;
 	});
 });
-let vh = window.innerHeight * 0.01;
 
-document.documentElement.style.setProperty(`--vh`, `${vh}px`);
-let vw = window.innerWidth * 0.01;
-document.documentElement.style.setProperty(`--vw`, `${vw}px`);
+/*----------
+Change theme if the preference is stored in localStorage [on pageLoad]*/
 
-window.addEventListener(`resize`, () => {
+(() => {
+	let cached_theme = localStorage.getItem(`themeMode`);
+	if (!cached_theme) {
+		localStorage.setItem(`themeMode`, `light`);
+		return;
+	}
+
+	switch (cached_theme) {
+		case `dark`:
+			body.addClass(`darkTheme`);
+			themeCheckbox.prop(`checked`, true);
+			break;
+		default:
+			body.removeClass(`darkTheme`);
+			break;
+	}
+})();
+/*----------
+Automatically update the page height and width every time it's resized*/
+
+window.addEventListener(`resize`, resizeHandler);
+function resizeHandler() {
 	let vh = window.innerHeight * 0.01;
-	document.documentElement.style.setProperty(`--vh`, `${vh}px`);
+	$(`:root`).css(`--vh`, `${vh}px`);
 	let vw = window.innerWidth * 0.01;
-	document.documentElement.style.setProperty(`--vw`, `${vw}px`);
+	$(`:root`).css(`--vw`, `${vw}px`);
+}
+resizeHandler();
+var docWidth = document.documentElement.offsetWidth;
+var docHeight = document.documentElement.offsetHeight;
+
+[].forEach.call(document.querySelectorAll('*'), function (el) {
+	if (el.offsetWidth > docWidth) {
+		console.log(`width`, el);
+	}
+	if (el.offsetHeight > docHeight) {
+		console.log(`height`, el);
+	}
 });

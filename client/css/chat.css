@@ -22,7 +22,8 @@
 	margin-bottom: 50px;
 }
 
-TYPING USERS*/ #typingUsersContainer {
+/*TYPING USERS*/
+#typingUsersContainer {
 	position: absolute;
 	bottom: 11ch;
 	right: 1rem;
@@ -31,6 +32,7 @@ TYPING USERS*/ #typingUsersContainer {
 	font-weight: 800;
 	color: var(--user-typing-text);
 	justify-items: end;
+	height: 50px;
 }
 #typingUsersContainer > * {
 	position: relative;
@@ -47,7 +49,7 @@ FORM INPUT & SUBMIT BTN*/
 	position: relative;
 
 	display: flex;
-	height: 11ch;
+	height: 90px;
 	box-sizing: border-box;
 }
 #form button {
@@ -64,7 +66,7 @@ FORM INPUT & SUBMIT BTN*/
 	resize: none;
 	text-align: start;
 
-	line-height: 80px;
+	line-height: 70px;
 }
 
 #messageInputField:focus {

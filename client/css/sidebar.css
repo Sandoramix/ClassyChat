@@ -26,16 +26,15 @@
 	height: 100%;
 }
 #sidebar {
-	visibility: hidden;
-
 	padding: 0.5rem;
 	height: calc(100% - 90px);
 	top: 90px;
 	position: absolute;
 	width: 15rem;
 
-	left: calc(var(--vw, 1vw) * 100 - 15rem);
-
+	transform: translateX(+150%);
+	transition: transform 0.75s ease-in-out;
+	right: 0px;
 	z-index: 25;
 
 	background: var(--sidebar-bg);
@@ -46,7 +45,7 @@
 }
 
 #sidebar.active {
-	visibility: visible;
+	transform: translateX(0%);
 }
 
 #sidebar .top {

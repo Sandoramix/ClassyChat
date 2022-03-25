@@ -2,7 +2,7 @@
 
 /*----------
 DECLARATIONS*/
-
+const body = $(`#body`);
 const messagesContainer = $(`#messagesContainer`);
 const messageForm = $(`#form`);
 const messageInputField = $(`#messageInputField`);
@@ -30,14 +30,6 @@ const themeCheckbox = $(`#themeSwitch`);
 
 /*----------*/
 
-themeCheckbox.on(`click`, () => {
-	let isChecked = themeCheckbox.is(`:checked`);
-	if (isChecked) {
-		$(body).addClass(`darkTheme`);
-	} else {
-		$(body).removeClass(`darkTheme`);
-	}
-});
 /*----------*/
 
 const socket = io();
@@ -103,7 +95,8 @@ socket.on(`online users`, (onlineUsers) => {
 	let ids = $.map(onlineUsers, ([el]) => {
 		return el;
 	});
-	onlineUsersList.children(`li`).each(() => {
+
+	onlineUsersList.children(`li`).each(function () {
 		if (!ids.includes($(this).attr(`id`))) {
 			$(this).remove();
 		}
