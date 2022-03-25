@@ -27,25 +27,24 @@
 }
 #sidebar {
 	padding: 0.5rem;
-	height: calc(100% - 90px);
-	top: 90px;
-	position: absolute;
-	width: 15rem;
+	height: 100%;
+	position: fixed;
 
-	transform: translateX(+150%);
-	transition: transform 0.75s ease-in-out;
+	transform: translateX(15rem);
+	transition: transform 0.75s ease-in-out, box-shadow 0.4s ease-in-out;
 	right: 0px;
 	z-index: 25;
 
 	background: var(--sidebar-bg);
-
+	width: 15rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 }
 
 #sidebar.active {
-	transform: translateX(0%);
+	transform: translateX(0px);
+	box-shadow: 0 0 5rem rgba(0, 0, 0, 0.8);
 }
 
 #sidebar .top {
