@@ -155,21 +155,20 @@ Change theme if the preference is stored in localStorage [on pageLoad]*/
 Automatically update the page height and width every time it's resized*/
 
 window.addEventListener(`resize`, resizeHandler);
+
 function resizeHandler() {
 	let vh = window.innerHeight * 0.01;
 	$(`:root`).css(`--vh`, `${vh}px`);
 	let vw = window.innerWidth * 0.01;
 	$(`:root`).css(`--vw`, `${vw}px`);
 }
-resizeHandler();
-var docWidth = document.documentElement.offsetWidth;
-var docHeight = document.documentElement.offsetHeight;
+$(window).on(`orientationchange`, function () {
+	let vh = $(`:root`).css(`--vw`);
+	let vw = $(`:root`).css(`--vh`);
 
-[].forEach.call(document.querySelectorAll('*'), function (el) {
-	if (el.offsetWidth > docWidth) {
-		console.log(`width`, el);
-	}
-	if (el.offsetHeight > docHeight) {
-		console.log(`height`, el);
-	}
+	$(`:root`).css(`--vh`, vh);
+	$(`:root`).css(`--vw`, vw);
+	removeEventListener(`resize`, window);
 });
+
+resizeHandler();
