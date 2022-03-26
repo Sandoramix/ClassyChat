@@ -1,41 +1,48 @@
-#chat-body {
-	background-color: var(--chat-bg);
-
-	max-height: calc(var(--vh, 1vh) * 100 - 180px);
-	height: calc(var(--vh, 1vh) * 100 - 180px);
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-}
-
 /*----------*/
 
 #messagesContainer {
+	background-color: var(--chat-bg);
+
+	height: var(--chat-body-height);
+	max-height: var(--chat-body-height);
+
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
-	overflow-y: scroll;
+
+	justify-content: start;
+
+	gap: var(--messages-gap);
+
+	overflow-y: auto;
 	overflow-x: hidden;
-	max-height: calc(var(--vh, 1vh) * 100 - 180px);
-	flex: 10 1 auto;
+
 	padding: 15px;
-	margin-bottom: 50px;
+	margin: 0;
 }
 
 /*TYPING USERS*/
 #typingUsersContainer {
-	position: absolute;
-	bottom: 11ch;
-	right: 1rem;
-	width: 100%;
-	text-align: end;
+	position: fixed;
+	bottom: var(--form-height);
+	right: 0;
+	left: 0;
+	width: fit-content;
+	text-align: center;
 	font-weight: 800;
-	color: var(--user-typing-text);
-	justify-items: end;
-	height: 50px;
+	justify-content: center;
+	margin: auto;
+
+	padding: 0;
+	border-radius: 0.5rem;
+	background-color: rgba(var(--text), 0.1);
 }
-#typingUsersContainer > * {
+#typingUsersContainer > li {
+	list-style: none;
 	position: relative;
+
+	color: var(--user-typing-text);
+	text-shadow: 0 0 20px rgb(var(--text));
+	margin: 1ch;
 }
 
 #footer {
@@ -49,36 +56,34 @@ FORM INPUT & SUBMIT BTN*/
 	position: relative;
 
 	display: flex;
-	height: 90px;
+	height: var(--form-height);
 	box-sizing: border-box;
 }
-#form button {
-	background-color: var(--navbar-bg) !important;
-	color: var(--navbar-text);
+#form > #sendMessageButton {
+	width: 10rem;
+	font-size: larger;
+	font-weight: 500;
+	background-color: var(--header-bg) !important;
+	color: var(--header-text);
+	margin: calc(var(--form-height) * 0.025) 0.25rem;
 }
 #messageInputField {
 	border: none;
 	padding: 0 1rem;
 	flex-grow: 1;
 	border-radius: 0.5ch;
-	margin: 0.25rem;
-	font-size: 150%;
+	margin: calc(var(--form-height) * 0.025) 0.25rem;
+	font-size: calc(var(--form-height) * 0.2);
 	resize: none;
 	text-align: start;
 
-	line-height: 70px;
+	line-height: calc(var(--form-height) - 10px);
 }
 
 #messageInputField:focus {
 	outline: none;
 }
 
-#sendMessageButton {
-	width: 10rem;
-	font-size: larger;
-	font-weight: 500;
-	margin: 0.25ch 0;
-}
 /*----------
 DEFAULT MESSAGE APPEARANCE*/
 .msg * {
@@ -93,11 +98,12 @@ DEFAULT MESSAGE APPEARANCE*/
 	overflow-wrap: anywhere;
 	padding: 0.5rem;
 	border-radius: 0 1rem 1rem 1rem;
-	min-width: 25%;
-	max-width: 90%;
+	min-width: var(--msg-min-width);
+	max-width: var(--msg-max-width);
 
 	background-color: var(--msg-bg);
-	box-shadow: rgb(0 0 0 / 25%) 0px 2px 2px 0px, rgb(0 0 0 / 25%) 0px 2px 5px 1px, rgb(0 0 0 / 50%) 0px -2px 0px inset;
+	box-shadow: rgba(var(--text), 0.25) 0px 2px 2px 0px, rgba(var(--text), 0.25) 0px 2px 5px 1px,
+		rgba(var(--text), 0.5) 0px -2px 0px inset;
 }
 
 .msg::before {
@@ -115,7 +121,7 @@ DEFAULT MESSAGE APPEARANCE*/
 
 .msg hr {
 	border: solid 0.1ch var(--msg-separator-color);
-	margin: 0.5ch 0;
+	margin: 0.5rem 0;
 }
 
 .msg-header {
@@ -123,7 +129,7 @@ DEFAULT MESSAGE APPEARANCE*/
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	height: 30px;
+	height: var(--msg-header-height);
 }
 
 .user {
@@ -154,7 +160,7 @@ DEFAULT MESSAGE APPEARANCE*/
 
 .msg.log {
 	background-color: var(--msg-bg-log);
-	min-width: 50%;
+	min-width: var(--msg-log-min-width);
 	flex-direction: row-reverse;
 	justify-content: space-between;
 }

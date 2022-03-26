@@ -1,15 +1,11 @@
 #themeSwitch {
 	position: absolute;
-	top: -10000px;
+	top: -100vh;
 }
-:root {
-	--width: 100px;
-	--height: calc(var(--width) * 0.4);
-	--font-size: calc(var(--height) * 0.25);
-}
+
 #themeButton {
-	width: var(--width);
-	height: var(--height);
+	width: var(--theme-btn-width);
+	height: var(--theme-btn-height);
 }
 #themeButton label {
 	height: 100%;
@@ -26,7 +22,7 @@
 	border-radius: 10em;
 	background-color: #fff;
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-	transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	transition: transform 0.3s ease-in-out;
 }
 
 #themeSwitch:checked + #themeButton label .toggle {
@@ -50,7 +46,7 @@
 }
 #themeText p {
 	display: flex;
-	font-size: var(--font-size);
+	font-size: var(--theme-btn-font-size);
 
 	line-height: 100%;
 	margin-bottom: 0;
