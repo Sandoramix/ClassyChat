@@ -18,7 +18,7 @@
 	"Comment line": {
 		"scope": "css,javascript",
 		"prefix": "cc",
-		"body": "\n/*----------*/\n$2",
+		"body": "\n/*----------$2*/\n",
 		"description": "Comment line"
 	}
 }
