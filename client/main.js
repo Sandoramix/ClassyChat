@@ -6,7 +6,6 @@ const body = $(`#body`);
 const messagesContainer = $(`#messagesContainer`);
 const messageForm = $(`#form`);
 const messageInputField = $(`#messageInputField`);
-const _messageInputField = document.getElementById(`messageInputField`);
 
 const changeNicknameButton = $(`#changeNickButton`);
 const sendMessageButton = $(`#sendMessageButton`);
@@ -66,7 +65,7 @@ socket.on(`typing`, (username, id) => {
 	if (typingUsersList.size > 1 || typingUsersList.has(id)) return;
 
 	let msg = `${username.length > 10 ? `${username.substring(0, 9)}...` : username} sta scrivendo...`;
-	let div = $(`<div>`);
+	let div = $(`<li>`);
 	div.text(msg);
 	typingUsersContainer.append(div);
 
