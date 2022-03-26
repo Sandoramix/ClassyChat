@@ -14,7 +14,7 @@
 	--new-msg-width-height: 50px;
 
 	--chat-body-height: calc(100vh - var(--header-height) - var(--form-height));
-	--chat-body-height: calc(100vh - var(--header-height) - var(--form-height));
+	--chat-body-height: calc(var(--vh, 1vh) * 100 - var(--header-height) - var(--form-height));
 
 	--messages-gap: 0.5rem;
 	--msg-min-width: 25%;
