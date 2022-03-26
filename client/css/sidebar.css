@@ -31,7 +31,7 @@
 	position: fixed;
 
 	transform: translateX(15rem);
-	transition: transform 0.75s ease-in-out, box-shadow 0.4s ease-in-out;
+	transition: transform 0.5s ease-in-out, box-shadow 0.4s ease-in-out;
 	right: 0px;
 	z-index: 25;
 
