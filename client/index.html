@@ -6,7 +6,7 @@
 		<meta name="description" content="Simple socket.io chat for my class" />
 		<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0" />
 		<link rel="apple-touch-icon" href="static/iphone-icon.png" />
-		<meta name="theme-color" id="meta-theme" />
+
 		<title>ClassyChat</title>
 
 		<script src="./js/jquery.min.js" defer></script>
@@ -17,7 +17,7 @@
 		<link rel="stylesheet" href="css/theme-switch.css" />
 	</head>
 	<body id="body">
-		<nav id="navbar" class="navbar p-2">
+		<header id="header" class="navbar p-2">
 			<div class="d-flex flex-column align-items-center">
 				<h4 class="mr-5">Username</h4>
 				<button id="changeNickButton" class="btn text-xxl-right"></button>
@@ -31,14 +31,13 @@
 					/>
 				</svg>
 			</div>
-		</nav>
+		</header>
 
-		<div id="chat-body">
-			<ul id="messagesContainer"></ul>
-		</div>
+		<ul id="messagesContainer"></ul>
+
 		<div id="footer">
 			<div id="new-message" class="d-none"></div>
-			<div id="typingUsersContainer"></div>
+			<ul id="typingUsersContainer"></ul>
 
 			<form id="form">
 				<textarea
@@ -82,5 +81,10 @@
 
 		<script src="main.js" defer></script>
 		<script src="listeners.js" defer></script>
+		<script>
+			document.addEventListener(`DOMContentLoaded`, () => {
+				document.body.classList.remove(`preload`);
+			});
+		</script>
 	</body>
 </html>
