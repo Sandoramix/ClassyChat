@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GNU v3",
   "dependencies": {
     "bootstrap": "^5.1.3",
     "express": "^4.17.3",
