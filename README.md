@@ -1,4 +1,4 @@
 # ClassyChat
-- Chat for classes
+- *Chat for classes*
 
-## Web chat that uses socket.io
+## Check it on the [site](https://classychat.damnfake.repl.co/)
