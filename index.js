@@ -35,15 +35,12 @@ io.on(`connection`, (st) => {
 	var nickname;
 
 	st.on(`disconnect`, (r) => {
-		//console.log(`{${ADDRESS} : ${id}}- Disconnected - ${nickname}`);
 		if (!nickname) return;
 		io.emit(`user disconnected`, nickname);
-		// console.log(`reason = ${r}`);
 		onlineUsers.delete(id);
 	});
 
 	st.on(`new message`, (user, msg) => {
-		// console.log(`[${ADDRESS}] new message: `, msg);
 		io.emit(`new message`, id, user, msg);
 	});
 
@@ -56,7 +53,6 @@ io.on(`connection`, (st) => {
 	});
 
 	st.on(`user connected`, (username) => {
-		//console.log(`{${ADDRESS} : ${id}}- Connected - ${username}`);
 		io.emit(`user connected`, username);
 
 		nickname = username;
@@ -64,26 +60,17 @@ io.on(`connection`, (st) => {
 	});
 
 	st.on(`typing`, (username) => {
-		// let hash = getHash(`${id}:${username}`);
-
 		io.emit(`typing`, username, id);
-		// console.log(`[${ADDRESS}] Typing - ${hash}`);
 	});
 
 	st.on(`not typing`, () => {
-		// let hash = getHash(`${id}:${username}`);
+		
 
 		io.emit(`not typing`, id);
-		// console.log(`[${ADDRESS}] Not-Typing - ${hash}`);
+		
 	});
 	st.on(`get online users`, () => {
 		st.emit(`online users`, [...onlineUsers]);
 	});
 });
-// const crypto = require(`crypto`);
 
-// function getHash(plaintext) {
-// 	var hasher = crypto.createHmac(`sha256`, env.crypto_secret);
-
-// 	return hasher.update(plaintext).digest(`base64`);
-// }
